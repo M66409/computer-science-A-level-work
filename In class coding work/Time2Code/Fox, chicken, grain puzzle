@@ -17,13 +17,14 @@ def puzzle_solved():
     
 def output():
   objects=[fox,farmer,grain,chicken]
+  objects_names=["fox","farmer","grain","chicken"]
   for i in range(len(objects)):
     if objects[i]==1:
       print("On the other side of the river")
-      print(objects[i])
+      print(objects_names[i])
     else:
       print("On this side of the river")#
-      print(objects[i])
+      print(objects_names[i])
 
 print("A fox, chicken and a bag of grain wait by the side of a river.")
 fox=0
