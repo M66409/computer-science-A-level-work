@@ -20,12 +20,12 @@ def output():
   objects_names=["fox","farmer","grain","chicken"]
   print("On the other side of the river")
   for i in range(len(objects)):
-    if objects[i]==1:
-      print(objects_names[i])
+   if objects[i]==1:
+    print(objects_names[i])
   print("On this side of the river")
   for i in range(len(objects)):
-    if objects[i]==0:
-      print(objects_names[i])
+   if objects[i]==0:
+    print(objects_names[i])
 
 print("A fox, chicken and a bag of grain wait by the side of a river.")
 fox=0
@@ -36,13 +36,13 @@ while (puzzle_solved()==False) and (wrong_move()==False):
   choice=input("""A fox, chicken and a bag of grain wait by the side of a river.
                 Which item will you take in your rowboat to the other side?
                 fox, chicken, grain or farmer""")
-  if choice=="chicken":
+  if choice=="chicken" and chicken==farmer:
     chicken=1-chicken
     farmer=1-farmer
-  elif choice=="grain":
+  elif choice=="grain" and grain==farmer:
     farmer=1-farmer
     grain=1-grain
-  elif choice=="fox":
+  elif choice=="fox" and fox==farmer:
     farmer=1-farmer
     fox=1-fox
   else:
