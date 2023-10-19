@@ -1,0 +1,42 @@
+# Egyptian multiplication program
+def mul(num1,num2):
+  sum=0
+  first_number=num1
+  second_number=num2
+  first_list=[]
+  second_list=[]
+  while first_number>=1:
+    first_list.append(first_number)
+    second_list.append(second_number)
+    print(first_list)
+    print(second_list)
+    first_number=first_number//2
+    second_number=second_number*2
+  for i in range(len(first_list)):
+    if first_place[i]%2==0:
+      total+=1
+  for i in range(len(first_list)-first_list.count()):
+    print(first_list)
+    print(second_list)
+    if first_list[i]%2==0:
+      del first_list[i]
+      del second_list[i]
+      print(i)
+  
+  for i in range(len(second_list)):
+    sum=sum+second_list[i]
+    i+=1
+  return sum
+
+def input_numbers():
+  num1=int(input("enter the first number"))
+  num2=int(input("enter the second number"))
+  return num1,num2
+
+numbers=input_numbers()
+for i in range(len(numbers)):
+  if i==0:
+    num1=numbers[i]
+  else:
+    num2=numbers[i]
+print(mul(num1,num2))
