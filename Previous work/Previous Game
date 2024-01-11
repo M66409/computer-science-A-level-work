@@ -1,0 +1,254 @@
+from random import randint
+from time import sleep
+from math import sqrt
+max_health=100
+health=max_health
+health_pots=randint(0,5)
+damage=5
+defence=0
+gold=randint(10,30)
+armour="No Armour"
+weapon="no weapon"
+alive=False
+level=1
+xp=0
+xp_needed=xp+(level*50)+100
+health_pots_price=randint(10,30)
+
+def stats():
+    global health,gold,alive,health_pots,damage,defence,armour,weapon,xp_needed,xp,level
+    health=100
+    health_pots=randint(0,5)
+    damage=5
+    defence=1
+    gold=randint(10,30)
+    armour="No Armour"
+    weapon="no weapon"
+    alive=False
+    level=1
+    xp_needed=round(((level*0.5)*100)+150)
+    xp = 0
+
+def save():
+    global health,gold,alive,health_pots,damage,defence,armour,weapon,xp_needed,xp,level
+    f=open("game_save","w")
+    writes=[health,gold,alive,health_pots,damage,defence,armour,weapon,xp_needed,xp,level]
+    for i in range(len(writes)):
+        f.write(writes[i])
+    f.close()
+
+
+def shop():
+    global gold,weapon,armour,damage,defence,health_pots,health_pots_price
+    armour_list=["leather armour","bronze armour","steel armour","obsidian armour","ancient armour"]
+    armour_defence=[5,10,20,25,50]
+    armour_price=[25,30,50,60,120]
+    weapons=["rusty sword","steel sword","knife","rusty knife","gold sword"]
+    weapon_dmg=[8,15,11,7,20]
+    weapon_price=[25,50,35,15,65]
+    action=input("Would you like to see the armour,weapons or potions\n")
+    if action.lower()=="armour":
+        for i in range(len(armour_list)):
+            print(i+1,":",armour_list[i],"Defense:",armour_defence[i],"Price:",armour_price[i],"Gold\n")
+            i+=1
+        action=int(input("\nWhat armour set would you like to buy?\n"))
+        if armour_price[action-1]<=gold:
+            armour=str(armour_list[action-1])
+            defence=armour_defence[action-1]/2
+            gold=gold-armour_price[action-1]
+            print("You now have",armour)
+            print("Your defence is now",defence)
+            print("Your gold is now",gold)
+        else:
+            print("You cannot afford this")
+    elif action.lower()=="weapons":
+        for i in range(len(weapons)):
+            print(i+1,":",weapons[i],"Damage:",weapon_dmg[i],"Price:",weapon_price[i],"Gold\n")
+            i+=1
+        action=int(input("\nWhat weapon would you like to buy?\n"))
+        if weapon_price[action-1]<=gold:
+            weapon=str(weapons[action-1])
+            damage=weapon_dmg[action-1]
+            gold=gold-weapon_price[action-1]
+            print("You now have a",weapon)
+            print("The damage you deal is now",damage)
+            print("Your gold is now",gold)
+        else:
+            print("You cannot afford this")
+    elif action.lower()=="potions":
+        print("Health potions are useful as they heal you,they cost",health_pots_price)
+        amount=int(input("How many health potions would you like to buy.\n"))
+        health_pot_actual_price=health_pots_price*amount
+        if health_pot_actual_price <= gold:
+            confirm=input("The cost for the health potions is "+str(health_pot_actual_price)+" are you sure you wanna buy them you have "+ str(gold)+" gold\n")
+            if confirm.lower()=="yes":
+                gold=gold-health_pot_actual_price
+                health_pots=health_pots+amount
+                print("You have",health_pots,"health potions")
+                print("Your gold is now",gold)
+            else:
+                print()
+        else:
+            print("You cannot afford this")
+    else:
+        shop()
+
+def inv():
+    print("you have",gold,"Gold")
+    print("The weapon you have equipped is",weapon,"which allows you to hit for",damage,"hp")
+    print("You have",armour,"equipped with a defence of",defence)
+    print("You have",health,"health")
+    print("You have",health_pots,"health potions")
+    print("You are level",level)
+
+def fight():
+    global health,gold,alive,xp,health_pots
+    enemy_list=["skeleton","zombie","slime","ghost","goblin","rat"]
+    enemy_hp=[randint(15,45),randint(5,15),randint(5,10),randint(1,5),randint(20,40),randint(1,3)]
+    enemy_dmg=[15,10,5,1,13,2]
+    enemy_gold=randint(15,25),randint(3,7),randint(3,5),randint(1,5),randint(12,22),randint(1,3)
+    enemy_xp=[randint(45,135),randint(15,45),randint(10,30),randint(5,15),randint(40,120),randint(3,9)]
+    index=randint(0,len(enemy_list)-1)
+    current_enemy=enemy_list[index]
+    if level<2:
+        ehealth=enemy_hp[index]
+        edamage=enemy_dmg[index]
+    else:
+        ehealth=round(enemy_hp[index]*sqrt(level))
+        edamage=round(enemy_dmg[index]*sqrt(level))
+    fight_reward=enemy_gold[index]
+    xp_reward=enemy_xp[index]
+    print("A",current_enemy,"has appeared")
+    print("The ",current_enemy," has ",ehealth," health and does ",edamage," damage")
+
+    while ehealth>0 or health>0:
+        edamage_done=edamage-(defence/5)
+        if edamage<=0:
+            health=health
+        elif edamage>0:
+            sleep(1.5)
+            print("You have",health,"health and the enemy has",ehealth,"health")
+            health=health-edamage_done
+            damage_done=randint((damage-5),(damage+5))
+            ehealth=ehealth-damage_done
+        if health<=0:
+            if health_pots>0:
+                heal()
+                print("You make one last stand against the",current_enemy)
+            else:
+                print("You have died")
+                alive=False
+                break
+        if ehealth<=0:
+            gold=gold+fight_reward
+            xp=xp+xp_reward
+            sleep(1.5)
+            print("The",current_enemy,"has been slain")
+            print("You have gained ",fight_reward," gold.You now have ",gold," gold")
+            print("you gained ",xp_reward,"xp.You now have ",xp,"xp")
+            print("your health is ",health)
+            playing()
+
+def heal():
+    global health,health_pots,max_health
+    health_pot_value=randint(10,30)
+    while health_pots>0:
+        action=input("Would you like to heal with a health potion\n")
+        if action.lower()=="yes":
+            health=health+health_pot_value
+            health_pots=health_pots-1
+            if health>max_health:
+                health=max_health
+            print("you have been healed your health is now",health)
+        elif action.lower()=="no":
+            playing()
+        else:
+            print("Please enter yes or no")
+            heal()
+    if health_pots<=0:
+        print("It seems that you don't have any health potions,why don't you buy one")
+
+def levelling():
+    global xp,xp_needed,health,damage,defence,level,max_health
+    xp_needed=xp+round((level*50)+100)
+    level=level+1
+    max_health=max_health+(max_health//100)
+    health=max_health
+    damage=damage+(damage//100)
+    defence=defence+(defence//100)
+    levelup_choice=input("Do you want to boost your Defence,Damage or Health\n")
+    if levelup_choice.lower()=="defence":
+        defence=defence+(defence//25)
+        print("You have chosen to strengthen your battlements against the hordes of enemies to a defence of",defence)
+    elif levelup_choice.lower()=="damage":
+        damage=damage+(damage//25)
+        print("You have chosen to stiffen your blows against the hordes of enemies to hit for",damage,"damage")
+    elif levelup_choice.lower()=="health":
+        max_health=max_health+(max_health//25)
+        health=max_health
+        print("You have chosen to increase your resolve against the hordes of enemies to a maximum of",max_health,"HP")
+    else:
+        levelup_choice=input("Try again")
+    print("You have defeated enough monsters to level up to Level:",level)
+
+def commands():
+    print("use the inventory command for your inventory")
+    print("use the fight command to fight an enemy")
+    print("use the shop command to buy equipment from a shop")
+    print("use the heal command to use health potions")
+
+def menu():
+    print("""//////////////////////////////////////
+         Welcome to the Game
+//////////////////////////////////////
+
+                Play
+                Commands
+                Leave
+""")
+
+def playing():
+    global alive,xp,xp_needed
+    if xp>xp_needed:
+        levelling()
+    action=input("\nwhat command do you want to input\n")
+    match action:
+        case "inv":
+            inv()
+            playing()
+        case "commands":
+            commands()
+            playing()
+        case "fight":
+            fight()
+        case "shop":
+            shop()
+            playing()
+        case "heal":
+            heal()
+            playing()
+        case "save":
+            save()
+            exit()
+        case _:
+            playing()
+
+def idle():
+    global alive
+    choice_1=input("Do you want to Play,leave or see the commands\n")
+    if choice_1.lower() == 'play':
+        print("You awake in a place you don't recognise and have a feeling you aren't safe there.")
+        stats()
+        alive=True
+        playing()
+    elif choice_1.lower() == 'commands':
+        commands()
+        idle()
+    elif choice_1.lower() == 'leave':
+        quit()
+    else:
+        idle()
+
+while alive==False:
+    menu()
+    idle()
