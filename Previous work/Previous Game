@@ -37,7 +37,6 @@ def save():
         f.write(writes[i])
     f.close()
 
-
 def shop():
     global gold,weapon,armour,damage,defence,health_pots,health_pots_price
     armour_list=["leather armour","bronze armour","steel armour","obsidian armour","ancient armour"]
@@ -122,7 +121,7 @@ def fight():
     print("The ",current_enemy," has ",ehealth," health and does ",edamage," damage")
 
     while ehealth>0 or health>0:
-        edamage_done=edamage-(defence/5)
+        edamage_done=edamage-(defence//5)
         if edamage<=0:
             health=health
         elif edamage>0:
