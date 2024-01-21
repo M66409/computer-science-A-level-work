@@ -3,24 +3,22 @@ from time import sleep
 from math import sqrt
 
 class player:
-    max_health=100
-    health=max_health
-    health_pots=randint(0,5)
-    damage=5
-    defence=0
-    gold=randint(10,30)
-    armour="No Armour"
-    weapon="no weapon"
-    alive=False
-    level=1
-    xp=0
-    xp_needed=xp+(level*50)+100
-    health_pots_price=randint(10,30)
-
-    def __init__(self):
-        pass
+    def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
+        self.max_health=100
+        self.health=self.max_health
+        self.health_pots=randint(0,5)
+        self.damage=5
+        self.defence=0
+        self.gold=randint(10,30)
+        self.armour="No Armour"
+        self.weapon="No weapon"
+        self.alive=False
+        self.level=1
+        self.xp=0
+        self.xp_needed=xp+(level*50)+100
+        self.health_pots_price=randint(10,30)
     
-    def commands():
+    def commands(self):
         print("use the inventory command for your inventory")
         print("use the fight command to fight an enemy")
         print("use the shop command to buy equipment from a shop")
@@ -153,7 +151,7 @@ class player:
             print("It seems that you don't have any health potions,why don't you buy one")
     
     def levelling(self):
-        xp_needed=self.xp+round((self.level*50)+100)
+        self.xp_needed=self.xp+round((self.level*50)+100)
         self.level=self.level+1
         self.max_health=self.max_health+(self.max_health//100)
         self.health=self.max_health
@@ -193,9 +191,9 @@ class player:
             case "heal":
                 self.heal()
                 self.playing()
-            case "save":
-                self.save()
-                exit()
+            #case "save":
+            #    self.save()
+            #    exit()
             case _:
                 self.playing()
 
@@ -212,12 +210,56 @@ class player:
         else:
             self.idle()
 
-class knight(player):
+class Knight(player):
     def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
-        super.__init__(max_health,health,defence,alive,level,xp,xp_needed,health_pots_price)
+        super().__init__(max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price)
+        self.max_health=max_health
+        self.health=health
         self.damage=damage
         self.weapon=weapon
+        self.health_pots=health_pots
+        self.defence=defence
+        self.gold=gold
+        self.armour=armour
 
-choice=input("What class do you want to play? Knight, Merchant, Healer, or the base class")
+class Merchant(player):
+     def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
+        super().__init__(max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price)
+        self.max_health=max_health
+        self.health=self.max_health
+        self.damage=damage
+        self.weapon=weapon
+        self.health_pots=health_pots
+        self.defence=defence
+        self.gold=gold
+        self.armour=armour
+        self.health_pots_price=health_pots_price
+    
+class Healer(player):
+     def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
+        super().__init__(max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price)
+        self.damage=damage
+        self.weapon=weapon
+        self.health_pots=health_pots
+        self.defence=defence
+        self.gold=gold
+        self.armour=armour
+        self.health_pots_price=health_pots_price
+
+choice=input("What class do you want to play? Knight, Merchant, Healer, or the base class\n")
+
 if choice.lower() == "knight":
-    pass
+    character = Knight(150,75,1,15,0,0,"Knightly armour","Sword of the fallen knight",0,5,0,0,0)
+    character.idle()
+
+elif choice.lower() == "merchant":
+    character = Merchant(75,0,0,0,0,randint(50,150),"Merchant garbs","No weapon",0,3,0,0,randint(5,15))
+    character.idle()
+
+elif choice.lower() == "healer":
+    character = Healer(0,0,12,1,15,10,"Finery of the Healer clergy","No weapon",0,2,0,0,randint(5,15))
+    character.idle()
+
+else:
+    character = player(0,0,0,0,0,0,0,0,0,0,0,0,0)
+    character.idle()
