@@ -249,14 +249,17 @@ class Healer(player):
 choice=input("What class do you want to play? Knight, Merchant, Healer, or the base class\n")
 
 if choice.lower() == "knight":
-    character = Knight(150,75,1,15,0,0,"Knightly armour","Sword of the fallen knight",0,5,0,0,0)
+    print("You have chosen to become a fallen Knight: Wounded yet Noble")
+    character = Knight(150,75,1,15,0,0,"Armour of the Knightly warriors","Sword of the fallen knight",0,5,0,0,0)
     character.idle()
 
 elif choice.lower() == "merchant":
-    character = Merchant(75,0,0,0,0,randint(50,150),"Merchant garbs","No weapon",0,3,0,0,randint(5,15))
+    print("You have chosen to be become a wealthy merchant of the guilds: Rich and Vain")
+    character = Merchant(75,0,0,0,0,randint(50,150),"Garbs of Merchant guilds","No weapon",0,3,0,0,randint(5,15))
     character.idle()
 
 elif choice.lower() == "healer":
+    print("You have chosen to become a healer of the clerical class: Regal yet Tough")
     character = Healer(0,0,12,1,15,10,"Finery of the Healer clergy","No weapon",0,2,0,0,randint(5,15))
     character.idle()
 
