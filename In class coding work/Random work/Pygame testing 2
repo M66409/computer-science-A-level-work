@@ -19,7 +19,7 @@ while running:
         elif event.key==pygame.K_RETURN:
           if text=="heal()":
             print("do you want to heal with a potion?")
-            text=""
+        text=""
         else:
           text+=event.unicode
         if event.type==pygame.QUIT:
