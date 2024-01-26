@@ -134,11 +134,14 @@ class player:
 
     def heal(self):
         health_pot_value=randint(10,30)
+        if self.health_pots<=0:
+            print("It seems that you don't have any health potions,why don't you buy one")
         while self.health_pots>0:
             action=input("Would you like to heal with a health potion\n")
             if action.lower()=="yes":
                 self.health=self.health+health_pot_value
                 self.health_pots-=1
+                print("You have ",self.health_pots," health potions")
                 if self.health>self.max_health:
                     self.health=self.max_health
                 print("you have been healed your health is now",self.health)
@@ -147,8 +150,7 @@ class player:
             else:
                 print("Please enter yes or no")
                 self.heal()
-        if self.health_pots<=0:
-            print("It seems that you don't have any health potions,why don't you buy one")
+
     
     def levelling(self):
         self.xp_needed=self.xp+round((self.level*50)+100)
