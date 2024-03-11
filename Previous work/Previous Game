@@ -25,6 +25,7 @@ class player:
         print("use the heal command to use health potions")
 
     def fight(self):
+        print("AAAAAAAAAAAAAAAAAAAAAAAA")
         enemy_array=[["skeleton","zombie","slime","ghost","goblin","rat"],
              [randint(15,45),randint(5,15),randint(5,10),randint(1,5),randint(20,40),randint(1,3)],
              [15,10,5,1,13,2],
@@ -68,7 +69,7 @@ class player:
                 print("You have gained ",fight_reward," gold.You now have ",self.gold," gold")
                 print("you gained ",xp_reward,"xp.You now have ",self.xp,"xp")
                 print("your health is ",self.health)
-                self.playing()
+                playing(self)
     
     def shop(self):
         armour_list=["leather armour","bronze armour","steel armour","obsidian armour","ancient armour"]
@@ -134,23 +135,21 @@ class player:
 
     def heal(self):
         health_pot_value=randint(10,30)
-        if self.health_pots<=0:
-            print("It seems that you don't have any health potions,why don't you buy one")
         while self.health_pots>0:
             action=input("Would you like to heal with a health potion\n")
             if action.lower()=="yes":
                 self.health=self.health+health_pot_value
                 self.health_pots-=1
-                print("You have ",self.health_pots," health potions")
                 if self.health>self.max_health:
                     self.health=self.max_health
                 print("you have been healed your health is now",self.health)
             elif action.lower()=="no":
-                self.playing()
+                playing(self)
             else:
                 print("Please enter yes or no")
                 self.heal()
-
+        if self.health_pots<=0:
+            print("It seems that you don't have any health potions,why don't you buy one")
     
     def levelling(self):
         self.xp_needed=self.xp+round((self.level*50)+100)
@@ -174,43 +173,6 @@ class player:
             levelup_choice=input("Try again")
         print("You have defeated enough monsters to level up to Level:",self.level)
 
-    def playing(self):
-        if self.xp>self.xp_needed:
-            self.levelling()
-        action=input("\nwhat command do you want to input\n")
-        match action:
-            case "inv":
-                self.inv()
-                self.playing()
-            case "commands":
-                self.commands()
-                self.playing()
-            case "fight":
-                self.fight()
-            case "shop":
-                self.shop()
-                self.playing()
-            case "heal":
-                self.heal()
-                self.playing()
-            #case "save":
-            #    self.save()
-            #    exit()
-            case _:
-                self.playing()
-
-    def idle(self):
-        choice_1=input("Do you want to Play,leave or see the commands\n")
-        if choice_1.lower() == 'play':
-            print("You awake in a place you don't recognise and have a feeling you aren't safe there.")
-            self.playing()
-        elif choice_1.lower() == 'commands':
-            self.commands()
-            self.idle()
-        elif choice_1.lower() == 'leave':
-            quit()
-        else:
-            self.idle()
 
 class Knight(player):
     def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
@@ -224,8 +186,58 @@ class Knight(player):
         self.gold=gold
         self.armour=armour
 
+    def fight(self):
+        enemy_array=[["skeleton","zombie","slime","ghost","goblin","rat"],
+             [randint(15,45),randint(5,15),randint(5,10),randint(1,5),randint(20,40),randint(1,3)],
+             [15,10,5,1,13,2],
+             [randint(15,25),randint(3,7),randint(3,5),randint(1,5),randint(12,22),randint(1,3)],
+             [randint(45,135),randint(15,45),randint(10,30),randint(5,15),randint(40,120),randint(3,9)]]
+        index=randint(0,len(enemy_array[0])-1)
+        current_enemy=enemy_array[0][index]
+        if self.level<2:
+            ehealth=enemy_array[1][index]
+            edamage=enemy_array[2][index]
+        else:
+            ehealth=round(enemy_array[1][index]*sqrt(self.level))
+            edamage=round(enemy_array[2][index]*sqrt(self.level))
+        fight_reward=enemy_array[3][index]
+        xp_reward=enemy_array[4][index]
+        print("A",current_enemy,"has appeared")
+        print("The ",current_enemy," has ",ehealth," health and does ",edamage," damage")
+        while ehealth>0 or self.health>0:
+            multiplier=1
+            luck=randint(0,100)/100
+            edamage_done=edamage-(self.defence//5)
+            if luck>=0.85:
+                multiplier=1.5
+            if edamage<=0:
+                self.health=self.health
+            elif edamage>0:
+                sleep(1.5)
+                print("You have",self.health,"health and the enemy has",ehealth,"health")
+                self.health=self.health-edamage_done
+                damage_done=randint((self.damage-5),(self.damage+5))
+                ehealth=ehealth-(damage_done*multiplier)
+            if self.health<=0:
+                if self.health_pots>0:
+                    self.heal()
+                    print("You make one last stand against the",current_enemy)
+                else:
+                    print("You have died")
+                    self.alive=False
+                    break
+            if ehealth<=0:
+                self.gold=self.gold+fight_reward
+                self.xp=self.xp+xp_reward
+                sleep(1.5)
+                print("The",current_enemy,"has been slain")
+                print("You have gained ",fight_reward," gold.You now have ",self.gold," gold")
+                print("you gained ",xp_reward,"xp.You now have ",self.xp,"xp")
+                print("your health is ",self.health)
+                playing(self)
+
 class Merchant(player):
-     def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
+    def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
         super().__init__(max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price)
         self.max_health=max_health
         self.health=self.max_health
@@ -236,9 +248,63 @@ class Merchant(player):
         self.gold=gold
         self.armour=armour
         self.health_pots_price=health_pots_price
-    
+
+    def fight(self):
+        enemy_array=[["skeleton","zombie","slime","ghost","goblin","rat"],
+             [randint(15,45),randint(5,15),randint(5,10),randint(1,5),randint(20,40),randint(1,3)],
+             [15,10,5,1,13,2],
+             [randint(15,25),randint(3,7),randint(3,5),randint(1,5),randint(12,22),randint(1,3)],
+             [randint(45,135),randint(15,45),randint(10,30),randint(5,15),randint(40,120),randint(3,9)]]
+        index=randint(0,len(enemy_array[0])-1)
+        current_enemy=enemy_array[0][index]
+        choice=input("Do you want to pay the monster to leave you alone")
+        if choice.lower()=="yes":
+            if self.gold-15<0:
+                self.gold=self.gold-15
+                print("You paid the, ",current_enemy," 15 gold")
+                playing(self)
+            else:
+                print("Your measly amount of gold was not sufficient")
+        if self.level<2:
+            ehealth=enemy_array[1][index]
+            edamage=enemy_array[2][index]
+        else:
+            ehealth=round(enemy_array[1][index]*sqrt(self.level))
+            edamage=round(enemy_array[2][index]*sqrt(self.level))
+        fight_reward=enemy_array[3][index]
+        xp_reward=enemy_array[4][index]
+        print("A",current_enemy,"has appeared")
+        print("The ",current_enemy," has ",ehealth," health and does ",edamage," damage")
+        while ehealth>0 or self.health>0:
+            edamage_done=edamage-(self.defence//5)
+            if edamage<=0:
+                self.health=self.health
+            elif edamage>0:
+                sleep(1.5)
+                print("You have",self.health,"health and the enemy has",ehealth,"health")
+                self.health=self.health-edamage_done
+                damage_done=randint((self.damage-5),(self.damage+5))
+                ehealth=ehealth-damage_done
+            if self.health<=0:
+                if self.health_pots>0:
+                    self.heal()
+                    print("You make one last stand against the",current_enemy)
+                else:
+                    print("You have died")
+                    self.alive=False
+                    break
+            if ehealth<=0:
+                self.gold=self.gold+fight_reward
+                self.xp=self.xp+xp_reward
+                sleep(1.5)
+                print("The",current_enemy,"has been slain")
+                print("You have gained ",fight_reward," gold.You now have ",self.gold," gold")
+                print("you gained ",xp_reward,"xp.You now have ",self.xp,"xp")
+                print("your health is ",self.health)
+                playing(self)
+
 class Healer(player):
-     def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
+    def __init__(self,max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price):
         super().__init__(max_health,health,health_pots,damage,defence,gold,armour,weapon,alive,level,xp,xp_needed,health_pots_price)
         self.damage=damage
         self.weapon=weapon
@@ -247,24 +313,111 @@ class Healer(player):
         self.gold=gold
         self.armour=armour
         self.health_pots_price=health_pots_price
+        
+    def fight(self):
+        enemy_array=[["skeleton","zombie","slime","ghost","goblin","rat"],
+             [randint(15,45),randint(5,15),randint(5,10),randint(1,5),randint(20,40),randint(1,3)],      #enemy health
+             [15,10,5,1,13,2],                                                                           #enemy damage
+             [randint(15,25),randint(3,7),randint(3,5),randint(1,5),randint(12,22),randint(1,3)],        #gold dropped
+             [randint(45,135),randint(15,45),randint(10,30),randint(5,15),randint(40,120),randint(3,9)]] #xp given
+        index=randint(0,len(enemy_array[0])-1)
+        current_enemy=enemy_array[0][index]
+        if self.level<2:
+            ehealth=enemy_array[1][index]
+            edamage=enemy_array[2][index]
+        else:
+            ehealth=round(enemy_array[1][index]*sqrt(self.level))
+            edamage=round(enemy_array[2][index]*sqrt(self.level))
+        fight_reward=enemy_array[3][index]
+        xp_reward=enemy_array[4][index]
+        print("A",current_enemy,"has appeared")
+        print("The ",current_enemy," has ",ehealth," health and does ",edamage," damage")
+        while ehealth>0 or self.health>0:
+            luck=randint(0,100)/100
+            miss=1
+            print(luck)
+            if luck>=0.85:
+                print("hahaha")
+                miss=0
+            edamage_done=edamage-(self.defence//5)
+            if edamage<=0:
+                self.health=self.health
+            elif edamage>0:
+                sleep(1.5)
+                print("You have",self.health,"health and the enemy has",ehealth,"health")
+                self.health=self.health-(edamage_done*miss)
+                damage_done=randint((self.damage-5),(self.damage+5))
+                ehealth=ehealth-damage_done
+            if self.health<=0:
+                if self.health_pots>0:
+                    self.heal()
+                    print("You make one last stand against the",current_enemy)
+                else:
+                    print("You have died")
+                    self.alive=False
+                    break
+            if ehealth<=0:
+                self.gold=self.gold+fight_reward
+                self.xp=self.xp+xp_reward
+                sleep(1.5)
+                print("The",current_enemy,"has been slain")
+                print("You have gained ",fight_reward," gold.You now have ",self.gold," gold")
+                print("you gained ",xp_reward,"xp.You now have ",self.xp,"xp")
+                print("your health is ",self.health)
+                playing(self)
+
+def playing(self):
+    if character.xp>character.xp_needed:
+        character.levelling()
+    action=input("\nwhat command do you want to input\n")
+    match action:
+        case "inv":
+            character.inv()
+            playing(character)
+        case "commands":
+            character.commands()
+            playing(character)
+        case "fight":
+            character.fight()
+        case "shop":
+            character.shop()
+            playing(character)
+        case "heal":
+            character.heal()
+            playing(character)
+        #case "save":
+        #    self.save()
+        #    exit()
+        case _:
+            playing(character)
+
+def idle(self):
+    choice_1=input("Do you want to Play,leave or see the commands\n")
+    if choice_1.lower() == 'play':
+        print("You awake in a place you don't recognise and have a feeling you aren't safe there.")
+        playing(character)
+    elif choice_1.lower() == 'commands':
+        character.commands()
+        character.idle()
+    elif choice_1.lower() == 'leave':
+        quit()
+    else:
+        idle(character)
 
 choice=input("What class do you want to play? Knight, Merchant, Healer, or the base class\n")
 
 if choice.lower() == "knight":
     print("You have chosen to become a fallen Knight: Wounded yet Noble")
     character = Knight(150,75,1,15,0,0,"Armour of the Knightly warriors","Sword of the fallen knight",0,5,0,0,0)
-    character.idle()
-
+    idle(character)
 elif choice.lower() == "merchant":
     print("You have chosen to be become a wealthy merchant of the guilds: Rich and Vain")
     character = Merchant(75,0,0,0,0,randint(50,150),"Garbs of Merchant guilds","No weapon",0,3,0,0,randint(5,15))
-    character.idle()
-
+    idle(character)
 elif choice.lower() == "healer":
     print("You have chosen to become a healer of the clerical class: Regal yet Tough")
     character = Healer(0,0,12,1,15,10,"Finery of the Healer clergy","No weapon",0,2,0,0,randint(5,15))
-    character.idle()
-
+    idle(character)
 else:
     character = player(0,0,0,0,0,0,0,0,0,0,0,0,0)
-    character.idle()
+    idle(character)
