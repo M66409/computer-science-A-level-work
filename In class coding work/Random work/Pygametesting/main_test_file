@@ -24,7 +24,7 @@ while running:
           if text=="heal":
             copy="do you want to heal with a potion?"
           elif text=="fight":
-             toload="pixil-frame-0 (3).png"
+             toload="pixil-frame-0 (4).png"
              print("A monster approaches from the shadows")
           elif text=="shop":
              copy="What are ya buying what are ya selling."
