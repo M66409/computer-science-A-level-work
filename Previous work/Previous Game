@@ -209,6 +209,7 @@ class Knight(player):
             luck=randint(0,100)/100
             edamage_done=edamage-(self.defence//5)
             if luck>=0.85:
+                print("Your elite training allows you to hit for double damage this turn")
                 multiplier=1.5
             if edamage<=0:
                 self.health=self.health
@@ -337,7 +338,7 @@ class Healer(player):
             miss=1
             print(luck)
             if luck>=0.85:
-                print("hahaha")
+                print("Your healing senses allow you to dodge the enemies attack this turn")
                 miss=0
             edamage_done=edamage-(self.defence//5)
             if edamage<=0:
