@@ -1,0 +1,10 @@
+ul{
+    border-style: solid;
+    background-color: royalblue;
+    width: 500px;
+    word-wrap: break-word;
+}
+
+p{
+    border-top-style:solid;
+}
