@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="title">Contact Us</title>
+    <link rel="stylesheet" href="contact.css">
+    <style>html{background-color: grey;}</style>
+</head>
+<body>
+    <h1 style="color:white;" id="h1">Contact Us</h1>
+    <ul class="nav-bar" id="nav-bars">
+        <li><a href="1st_page.HTML" >Home</a></li>
+        <li><a href="Giza.HTML" >Giza</a></li>
+        <li><a href="China.HTML" >Great Wall </a></li>
+        <li><a href = "Petra.HTML" >Petra</a></li>
+        <li><a href = "Chichen.HTML" >Chichen Itza</a></li>
+        <li><a href = "Machu.HTML" >Machu Picchu</a></li>
+        <li><a href="Colosseum.HTML" >Colosseum</a></li>
+        <li><a href = "Taj_Mahal.HTML" >Taj Mahal</a></li>
+        <li><a href="Contact.HTML" class="active" id="active">Contact Us</a></li>
+        <li>
+            <p id="nav-bar-paragraph">
+            Here at Travel Inc. We aim to provide amazing travelling experiences for each and every customer 
+            that we serve.Our company was founded in 1945 when our founder helped many people of high standing 
+            travel across the world to escape unjust persecution
+            </p>
+        </li>
+    </ul>
+
+    <button id="dark mode" onclick="dark_mode()">Toggle Dark Mode</button>
+
+    <form name= "contact">
+        <label>First Name:</label>
+        <input type="text" id="fname" name="fname"><br><br>
+        <label>Last Name:</label>
+        <input type="text" id="lname" name="lname"><br><br>
+        <label>E-mail:</label>
+        <input type="email" id="email" name="email"><br><br>
+        <label>Message:</label>
+        <textarea cols="30" rows="5" id="message" name="message"></textarea>
+        <!--<input type="submit" id="submit" name="submit">-->
+        <button id="submit" onclick="Contact_message()">Submit</button>
+    </form>
+
+<script>
+    function Contact_message(){
+        var x = document.forms[contact][message].value;
+        if(x==""){
+            alert("Please write something in the message column")
+        }
+        else{
+        alert("Thank you for contacting us ")
+        }
+    }
+
+    function dark_mode(){
+        let whole_doc= document.getElementById("html");
+        whole_doc.style.backgroundColor="#505050";
+        let nav_bar=document.getElementById("nav-bars");
+        nav_bar.style.backgroundColor="#505050";
+        document.getElementById("nav-bar-paragraph").style.backgroundColor="#505050";
+        let active=document.getElementById("active");
+        active.style.backgroundColor="#336A6B";
+        let h1=document.getElementById("h1");
+        h1.style.backgroundColor="#505050"
+    }
+</script>
+</body>
+</html>

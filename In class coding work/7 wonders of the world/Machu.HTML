@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machu Picchu month off</title>
+    <link rel="stylesheet" href="Rest_style.css">
+    <style>html{background-color: grey;}</style>
+</head>
+<body>
+    
+    <h1 style="text-align: center; color:white;" id="h1">Venture to the city in the skies</h1>
+    
+    <ul class="nav-bar" id="nav-bars">
+        <li><a href="1st_page.HTML">Home</a></li>
+        <li><a href="Giza.HTML" >Giza</a></li>
+        <li><a href="China.HTML">Great Wall of China</a></li>
+        <li><a href = "Petra.HTML">Petra</a></li>
+        <li><a href = "Chichen.HTML">Chichen Itza</a></li>
+        <li><a href = "Machu.HTML" class="active" id="active">Machu Picchu</a></li>
+        <li><a href="Colosseum.HTML" >Colosseum</a></li>
+        <li><a href = "Taj_Mahal.HTML">Taj Mahal</a></li>
+        <li><a href="Contact.HTML">Contact Us</a></li>
+        <li><p id="nav-bar-paragraph">Here at Travel Inc. We aim to provide amazing travelling experiences for each and every customer 
+            that we serve.Our company was founded in 1945 when our founder helped many people of high standing 
+            travel across the world to escape unjust persecution
+        </p></li>
+    </ul>
+    
+    <iframe height = "183px" width="275px" src="https://www.youtube.com/embed/cnMa-Sm9H4k"></iframe>
+        
+        <h2>The history of Machu Picchu</h2>
+        
+        <p>Embedded within a dramatic landscape at the meeting point between the Peruvian Andes and the Amazon Basin,
+            the Historic Sanctuary of Machu Picchu is among the greatest artistic, architectural and land use achievements 
+            anywhere and the most significant tangible legacy of the Inca civilization. Recognized for outstanding cultural
+            and natural values, the mixed World Heritage property covers 32,592 hectares of mountain slopes, peaks and valleys
+            surrounding its heart, the spectacular archaeological monument of “La Ciudadela” (the Citadel) at more than 
+            2,400 meters above sea level. Built in the fifteenth century Machu Picchu was abandoned when the Inca Empire was 
+            conquered by the Spaniards in the sixteenth century. It was not until 1911 that the archaeological complex was made 
+            known to the outside world. The approximately 200 structures making up this outstanding religious, ceremonial, 
+            astronomical and agricultural centre are set on a steep ridge, crisscrossed by stone terraces. Following a rigorous
+            plan the city is divided into a lower and upper part, separating the farming from residential areas, with a large 
+            square between the two. To this day, many of Machu Picchu’s mysteries remain unresolved, including the exact role 
+            it may have played in the Incas’ sophisticated understanding of astronomy and domestication of wild plant species. 
+            The massive yet refined architecture of Machu Picchu blends exceptionally well with the stunning natural environment,
+            with which it is intricately linked. Numerous subsidiary centres, an extensive road and trail system, irrigation
+            canals and agricultural terraces bear witness to longstanding, often on-going human use. The rugged topography making 
+            some areas difficult to access has resulted in a mosaic of used areas and diverse natural habitats. The Eastern slopes
+            of the tropical Andes with its enormous gradient from high altitude “Puna” grasslands and Polylepis thickets to montane
+            cloud forests all the way down towards the tropical lowland forests are known to harbour a rich biodiversity and high
+            endemism of global significance. Despite its small size the property contributes to conserving a very rich habitat and
+            species diversity with remarkable endemic and relict flora and fauna.
+        </p>
+
+        <h2>What we offer</h2>
+        
+        <p id="paragraph">We offer a 4 day excursion up to the summit of Machu Picchu, the excursion shall be accompanied by a professor in Incan 
+            studies which will allow for a greater understanding of the city and its place within Incan society
+        </p>
+        
+        <table>
+            <caption>Travel itinerary</caption>
+            <tr>
+                <th>Time</th>
+                <th>First Day</th>
+                <th>Second Day</th>
+                <th>Third Day</th>
+                <th>Fourth Day</th>
+            </tr>
+            <tr>
+                <td>09:00-10:30</td>
+                <td>Begin the climb up the mountain</td>
+                <td>Reach the city of Machu Picchu</td>
+                <td>Attend a talk about the construction of the city</td>
+                <td>Begin descent down the mountain</td>
+            </tr>
+            <tr>
+                <td>10:30-12:00</td>
+                <td>Lunch</td>
+                <td>Lunch</td>
+                <td>Lunch</td>
+                <td>Lunch</td>
+            </tr>
+            <tr>
+                <td>12:00-14:00</td>
+                <td>Explore the ruins of Machu Picchu</td>
+                <td>Make camp at the city</td>
+                <td>Obeserve the constellations from the site to examine the astrological significance of the area</td>
+                <td>Finish the descent down the mountain</td>
+            </tr>
+        </table>
+        
+        <button id="dark mode" onclick="dark_mode()">Toggle Dark Mode</button>
+
+        <script>
+            function dark_mode(){
+                let whole_doc= document.getElementById("html");
+                whole_doc.style.backgroundColor="#505050";
+                let nav_bar=document.getElementById("nav-bars");
+                nav_bar.style.backgroundColor="#505050";
+                let active=document.getElementById("active");
+                active.style.backgroundColor="#336A6B";
+                let h1=document.getElementById("h1");
+                h1.style.backgroundColor="#505050"
+                let p = document.querySelectorAll("p");
+            p.forEach(ps => {
+                ps.style.backgroundColor = "#336A6B";
+            });
+            document.getElementById("nav-bar-paragraph").style.backgroundColor="#505050";
+            }
+        </script>
+
+</body>
+</html>

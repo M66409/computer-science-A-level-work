@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chichen cast away</title>
+    <link rel="stylesheet" href="Rest_style.css">
+    <style>html{background-color: grey;}</style>
+</head>
+<body>
+   
+    <h1 style="text-align: center; color:white;" id="h1">Revel in the hidden city of Chichen Itza</h1>
+   
+    <ul class="nav-bar" id="nav-bars">
+        <li><a href="1st_page.HTML">Home</a></li>
+        <li><a href="Giza.HTML" >Giza</a></li>
+        <li><a href="China.HTML">Great Wall of China</a></li>
+        <li><a href = "Petra.HTML">Petra</a></li>
+        <li><a href = "Chichen.HTML" class="active" id="active">Chichen Itza</a></li>
+        <li><a href = "Machu.HTML">Machu Picchu</a></li>
+        <li><a href="Colosseum.HTML" >Colosseum</a></li>
+        <li><a href = "Taj_Mahal.HTML">Taj Mahal</a></li>
+        <li><a href="Contact.HTML">Contact Us</a></li>
+        <li><p id="nav-bar-paragraph">Here at Travel Inc. We aim to provide amazing travelling experiences for each and every customer 
+            that we serve.Our company was founded in 1945 when our founder helped many people of high standing 
+            travel across the world to escape unjust persecution</p></li>
+    </ul>
+   
+    <iframe height="183px" width="275px" src="https://www.youtube.com/embed/zJCrrTk-dLQ"></iframe>
+   
+    <h2>The history of Chichen Itza</h2>
+   
+    <p id="paragraph">The town of Chichen-Itza was established during the Classic period close to two natural cavities (cenotes or chenes)
+        , which gave the town its name "At the edge of the well of the Itzaes". The cenotes facilitated tapping the underground
+        waters of the area. The dates for this settlement vary according to subsequent local accounts: one manuscript gives 
+        415-35 A.D., while others mention 455 A.D. The town that grew up around the sector known as Chichen Viejo already 
+        boasted important monuments of great interest: the Nunnery, the Church, Akab Dzib, Chichan Chob, the Temple of the 
+        Panels and the Temple of the Deer. They were constructed between the 6th and the 10th centuries in the characteristic 
+        Maya style then popular both in the northern and southern areas of the Puuc hills. The second settlement of Chichen-Itza,
+        and the most important for historians, corresponded to the migration of Toltec warriors from the Mexican plateau towards
+        the south during the 10th century. According to the most common version, the King of Tula, Ce Acatl Topiltzin Quetzalcoatl
+        , or Kukulkan as the Maya translated the name, reportedly took the city between 967 A.D. and 987 A.D. Following the conquest
+        of Yucatán a new style blending the Maya and Toltec traditions developed, symbolizing the phenomenon of acculturation. 
+        Chichen-Itza is a clear illustration of this fusion. Specific examples are, in the group of buildings to the south, the 
+        Caracol, a circular stellar observatory whose spiral staircase accounts for its name, and, to the north, El Castillo 
+        (also known as the Temple of Kukulkan). Surrounding El Castillo are terraces where the major monumental complexes were built:
+        on the north-west are the Great Ball Court, Tzompantli or the Skull Wall, the temple known as the Jaguar Temple, and the House
+        of Eagles; on the north-east are the Temple of the Warriors, the Group of the Thousand Columns, the Market and the Great Ball
+        Court; on the south-west is the Tomb of the High Priest. After the 13th century no major monuments seem to have been constructed
+        at Chichen-Itza and the city rapidly declined after around 1440 A.D. The ruins were not excavated until 1841 A.D.
+    </p>
+   
+    <h2>What we offer</h2>
+   
+    <p id="paragraph">We offer a one day expedition to the lost city of Chichen Itza accompanied by a professor in Mezoamerican studies who specialises 
+        in the Mayan and Toltec civilisations and the blend between them that occuured at occured at Chichen Itza
+    </p>
+
+    <table>
+        <caption>Travel itinerary</caption>
+        <tr>
+            <th>Time</th>
+            <th>First Day</th>
+        </tr>
+        <tr>
+            <td>09:00-10:00</td>
+            <td>Trek to Chichen Itza</td>
+        </tr>
+        <tr>
+            <td>10:00-11:30</td>
+            <td>Explore the ruins of the lost city of Chichen Itza</td>
+        </tr>
+        <tr>
+            <td>11:30-12:00</td>
+            <td>Lunch</td>
+        </tr>
+        <tr>
+            <td>12:00-14:00</td>
+            <td>Attend a talk about the blend between the Mayan and Toltec civilisations and how the city influenced the Yucatan region</td>
+        </tr>
+        <tr>
+            <td>14:00-18:00</td>
+            <td>Examine the constellations and how they lent to the significance of the site astrologically</td>
+        </tr>
+    </table>
+
+    <button id="dark mode" onclick="dark_mode()">Toggle Dark Mode</button>
+
+    <script>
+        function dark_mode(){
+            let whole_doc= document.getElementById("html");
+            whole_doc.style.backgroundColor="#505050";
+            let nav_bar=document.getElementById("nav-bars");
+            nav_bar.style.backgroundColor="#505050";
+            let active=document.getElementById("active");
+            active.style.backgroundColor="#336A6B";
+            let h1=document.getElementById("h1");
+            h1.style.backgroundColor="#505050"
+            let p = document.querySelectorAll("p");
+            p.forEach(ps => {
+                ps.style.backgroundColor = "#336A6B";
+            });
+            document.getElementById("nav-bar-paragraph").style.backgroundColor="#505050";
+        }
+    </script>
+
+</body> 
+</html>

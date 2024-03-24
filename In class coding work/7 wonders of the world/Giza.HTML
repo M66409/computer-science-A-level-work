@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" id="html">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="Rest_style.css">
+    <style>html{background-color: grey;}</style>
+    <title>Giza Getaway</title>
+</head>
+<body>
+    
+    <h1 style="text-align: center; color:white;" id="h1">Tour the towering Pyramids in the desert</h1>
+    
+    <ul class="nav-bar" id="nav-bars">
+        <li><a href="1st_page.HTML">Home</a></li>
+        <li><a href="Giza.HTML" class="active" id="active">Giza</a></li>
+        <li><a href=China.HTML>Great Wall </a></li> 
+        <li><a href = "Petra.HTML" >Petra</a></li>
+        <li><a href = "Chichen.HTML" >Chichen Itza</a></li>
+        <li><a href = "Machu.HTML">Machu Picchu</a></li>
+        <li><a href="Colosseum.HTML" >Colosseum</a></li>
+        <li><a href = "Taj_Mahal.HTML">Taj Mahal</a></li>
+        <li><a href="Contact.HTML">Contact Us</a></li>
+        <li><p id="nav-bar-paragraph">Here at Travel Inc. We aim to provide amazing travelling experiences for each and every customer 
+            that we serve.Our company was founded in 1945 when our founder helped many people of high standing 
+            travel across the world to escape unjust persecution</p></li>
+    </ul>
+    
+    <iframe height="183px" width="275px" src="https://www.youtube.com/embed/dWq0iC4YqbE?controls=1"></iframe>
+    
+    <h2>The history of the Pyramids</h2>
+    
+    <p id="paragraph"> The pyramids of Giza have been the center of the world's amazement for millenia as their visage towered
+        above the surrounding delta. These symbols of power and opulence were used as the tombs for three 4th 
+        dynasty rulers of Egypt. The Giza Pyramids, built to endure an eternity, have done just that. The monumental
+        tombs are relics of Egypt's Old Kingdom era and were constructed some 4,500 years ago. Egypt's pharaohs expected
+        to become gods in the afterlife. To prepare for the next world they erected temples to the gods and massive
+        pyramid tombs for themselves—filled with all the things each ruler would need to guide and sustain himself 
+        in the next world. Each of the three massive pyramids is but one part of a larger complex, including a palace,
+        temples, solar boat pits, and other features. Pharaoh Khufu was the first Egyptian king to build a pyramid in 
+        Giza, a project he began in circa 2550 B.C. His Great Pyramid is the largest in Giza and originally towered 
+        some 481 feet (147 meters) above the plateau—it’s a bit shorter now with its smooth casing stones long gone. 
+        Its estimated 2.3 million stone blocks each weigh an average of 2.5 to 15 tons. Khufu's son, Khafre, built 
+        the second pyramid at Giza, circa 2520 B.C. His necropolis, or burial ground, stands out on the landscape
+        because it also includes the Sphinx, a mysterious limestone monument with the body of a lion and the head of 
+        a pharaoh. The Sphinx, which before the 1800s spent thousands of years buried in the sand with only its head 
+        visible, may stand sentinel for the pharaoh’s tomb complex, although there’s no definitive proof that he built it.
+        The third of the Giza Pyramids is considerably smaller than the first two—less than half their height at about 218 
+        feet. Built by Khafre’s son Menkaure circa 2490 B.C. the pyramid’s elaborate complex includes two separate temples
+        connected by a long causeway, and three individual queens’ pyramids. Menkaure’s chambers include niche decorations
+        unique to Giza and a vaulted ceiling in his burial chamber itself. The pharaoh’s elaborate sarcophagus was lost at
+        sea near Gibraltar in 1838.
+    </p>
+
+    <h2>What we offer:</h2>
+    
+    <p id="paragraph">We are offering a 3 day trip to the Pyramids and the accompanying sites and monuments that surround them.The trip 
+        will be lead by a qualified Egyptologist who will guide the group around the sites and explain in detail the 
+        history and significance of each site that is visited.
+    </p>
+
+    <table>
+        <caption>Trip itinerary</caption>
+        <tr>
+            <th>Time</td>
+            <th>First Day</td>
+            <th>Second Day</td>
+            <th>Third Day</td>
+        </tr>
+        <tr>
+            <td>09:00-10:00</td>
+            <td style="height:50px;">Travel to the Pyramid of Khufu</td>
+            <td>Travel to the Pyramids of Khafre and Menkaure</td>
+            <td>Travel to the tombs of the workers</td>
+        </tr>
+        <tr>
+            <td>10:00-12:30</td>
+            <td style="height:50px;">Attend a talk about the Pyramid  of Khufu</td>
+            <td>Attend a talk about the Pyramids of Khafre and Menkaure</td>
+            <td>Attend a talk about the construction of the Pyramids </td>
+        </tr>
+        <tr>
+            <td>12:30-14:00</td>
+            <td style="height:50px;">Lunch</td>
+            <td>Lunch</td>
+            <td>Lunch</td>
+        </tr>
+        <tr>
+            <td>14:00-15:30</td>
+            <td style="height:50px;">Climb the Pyramid of Khufu</td>
+            <td>Climb the Pyramid of Khafre and Menkaure</td>
+            <td>Explore the tombs of the workers</td>
+        </tr>
+    </table>
+
+    <button id="dark mode" onclick="dark_mode()">Toggle Dark Mode</button>
+
+    <script>
+        function dark_mode(){
+            let whole_doc= document.getElementById("html");
+            whole_doc.style.backgroundColor="#505050";
+            let nav_bar=document.getElementById("nav-bars");
+            nav_bar.style.backgroundColor="#505050";
+            let active=document.getElementById("active");
+            active.style.backgroundColor="#336A6B";
+            let h1=document.getElementById("h1");
+            h1.style.backgroundColor="#505050";
+            let p = document.querySelectorAll("p");
+            p.forEach(ps => {
+                ps.style.backgroundColor = "#336A6B";
+            });
+            document.getElementById("nav-bar-paragraph").style.backgroundColor="#505050";
+
+        }
+    </script>
+
+</body>
+</html>
