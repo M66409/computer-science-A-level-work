@@ -128,15 +128,25 @@
     
     <script>
         function dark_mode(){
-            let whole_doc= document.getElementById("html");
-            whole_doc.style.backgroundColor="#505050";
-            let nav_bar=document.getElementById("nav-bars");
-            nav_bar.style.backgroundColor="#505050";
-            document.getElementById("nav-bar-paragraph").style.backgroundColor="#505050";
-            let active=document.getElementById("active");
-            active.style.backgroundColor="#336A6B";
-            let h1=document.getElementById("h1");
-            h1.style.backgroundColor="#505050"
+            var html=document.querySelector("html")
+            html.classList.toggle("html_dark")
+
+            var nav_bar = document.getElementById("nav-bars")
+            nav_bar.classList.toggle("nav-bar_dark")
+
+            var nav_paragraph = document.getElementById("nav-bar-paragraph")
+            nav_paragraph.classList.toggle("nav-bar_paragraphs")
+
+            var h1 = document.getElementById("h1")
+            h1.classList.toggle("h1_dark")
+
+            var nav_active = document.getElementById("active")
+            nav_active.classList.toggle("active_dark")
+            
+            var lists = document.querySelectorAll(".lists")
+            for(let i=0;i<lists.length;i++){
+                lists[i].classList.toggle("lists_dark")
+            }
         }
     </script>
 
