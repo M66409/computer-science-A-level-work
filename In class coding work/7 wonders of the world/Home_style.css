@@ -89,3 +89,26 @@ li p{
 button{
     margin-left:10%;
 }
+
+.nav-bar_dark{
+    background-color: #505050;
+}
+.nav-bar_paragraphs{
+    background-color: #505050;
+}
+
+.html_dark{
+    background-color: #505050;
+}
+
+.active_dark{
+    background-color: #336A6B !important;
+}
+
+.h1_dark{
+    background-color: #505050;
+}
+
+.lists_dark{
+    background-color: #22387a ;
+}
