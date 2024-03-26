@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chinese Celebration</title>
     <link rel="stylesheet" href="Rest_style.css">
+    <script src="main.js"></script>
     <style>html{background-color: grey;}</style>
 </head>
 <body>
@@ -116,25 +117,7 @@
             </tr>
         </table>
 
-        <button id="dark mode" onclick="dark_mode()">Toggle Dark Mode</button>
-
-        <script>
-            function dark_mode(){
-                let whole_doc= document.getElementById("html");
-                whole_doc.style.backgroundColor="#505050";
-                let nav_bar=document.getElementById("nav-bars");
-                nav_bar.style.backgroundColor="#505050";
-                let active=document.getElementById("active");
-                active.style.backgroundColor="#336A6B";
-                let h1=document.getElementById("h1");
-                h1.style.backgroundColor="#505050";
-                let p = document.querySelectorAll("p");
-            p.forEach(ps => {
-                ps.style.backgroundColor = "#336A6B";
-            });
-            document.getElementById("nav-bar-paragraph").style.backgroundColor="#505050";
-            }
-        </script>
+        <button id="dark mode" onclick="dark_mode()" style="translate: 1010% -5735%;">Toggle Dark Mode</button>
 
 </body>
 </html>

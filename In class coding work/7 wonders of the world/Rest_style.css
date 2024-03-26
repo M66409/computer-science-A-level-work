@@ -81,7 +81,7 @@ h2{
 
 table{
     margin-left: 10%;
-    width:30%
+    width:50%
 }
 
 table,th,td,tr{
@@ -105,4 +105,41 @@ th{
 
 button{
     margin-left:10%;
+    background-color: grey;
+}
+
+.nav-bar_dark{
+    background-color: #505050;
+}
+
+.nav-bar_paragraphs{
+    background-color: #505050 !important;
+}
+
+.html_dark{
+    background-color: #505050;
+}
+
+.active_dark{
+    background-color: #336A6B !important;
+}
+
+.h1_dark{
+    background-color: #505050;
+}
+
+.lists_dark{
+    background-color: #22387a ;
+}
+
+.p_dark{
+    background-color: #22387a;
+}
+
+.tr_even_dark{
+    background-color: #22387a !important;
+}
+
+.tr_odd_dark{
+    background-color: #336A6B !important;
 }
