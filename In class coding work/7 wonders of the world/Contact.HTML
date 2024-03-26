@@ -37,25 +37,24 @@
         <input type="text" id="fname" name="fname"><br><br>
         <label>Last Name:</label>
         <input type="text" id="lname" name="lname"><br><br>
-        <label>E-mail:</label>
+        <label>E-mail:    </label>
         <input type="email" id="email" name="email"><br><br>
-        <label>Message:</label>
+        <label>Message:   &nbsp</label>
         <textarea cols="30" rows="5" id="message" name="message"></textarea>
-        <input onclick="Contact_message()" type="submit" id="submit" name="submit">
-        <button onclick="Contact_message()">Submit</button>
+        <input onclick="Validate_message()" type="submit" id="submit" name="submit">
     </form>
 
 <script>
-    function Contact_message(){
-        var x = document.forms[contact][message].value;
-        alert(x)
-        if(x==""){
+    function Validate_message(){
+        var x = document.querySelector("textarea").textLength;
+        if(x == 0){
             alert("Please write something in the message column")
         }
         else{
             alert("Thank you for contacting us ")
         }
     }
+    
 </script>
 </body>
 </html>
