@@ -106,6 +106,9 @@ th{
 button{
     margin-left:10%;
     background-color: grey;
+    position: fixed;
+    top: 8%;
+    right: 0%;
 }
 
 .nav-bar_dark{

@@ -88,7 +88,9 @@ li p{
 button{
     margin-left:10%;
     background-color: grey;
-    translate: 1010% -14060%;
+    position: fixed;
+    top: 8%;
+    right: 0%;
 }
 
 .nav-bar_dark{
