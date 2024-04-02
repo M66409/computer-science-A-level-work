@@ -4,6 +4,7 @@
 #include <cmath>
 #include <chrono>
 #include <thread>
+#include <ctime>
 
 class Player{
     public:
@@ -53,60 +54,62 @@ class Player{
     }
 
     void fight(Player Player){
+        std::cout << "AAAAAAAAAA\n";
         std::string enemy[6] = {"skeleton", "zombie", "slime", "ghost", "goblin", "rat"};
         int enemy_stats[4] [6]= { { rand()%31+15, rand()%11+5, rand()%6+5, rand()%5+1, rand()%21+20, rand()%3+1 },
-            { 15, 10, 5, 1, 13, 2 },
-            { rand()%91+45, rand()%31+15, rand()%21+10, rand()%11+5, rand()%81+40, rand()%7+3},
-            { rand()%11+15, rand()%5+3, rand()%3+3,rand()%5+1,rand()%11+12, rand()%3+1}};
+                                  { 15, 10, 5, 1, 13, 2 },
+                                  { rand()%91+45, rand()%31+15, rand()%21+10, rand()%11+5, rand()%81+40, rand()%7+3},
+                                  { rand()%21+15, rand()%15+3, rand()%13+3,rand()%15+1,rand()%21+12, rand()%13+1}};
         int index = rand()%6;
         std::string current_enemy = enemy[index];
         int ehealth;
         int edamage;
-        if (Player.level<2){
+        if (this->level<2){
             ehealth = enemy_stats[0][index];
             edamage = enemy_stats[1][index];
         }else{
-            ehealth = round(enemy_stats[0][index]*(sqrt(Player.level)));
-            edamage = round(enemy_stats[1][index]*(sqrt(Player.level)));
+            ehealth = round(enemy_stats[0][index]*(sqrt(this->level)));
+            edamage = round(enemy_stats[1][index]*(sqrt(this->level)));
             }
         int reward = enemy_stats[2][index];
         int xp_reward = enemy_stats[3][index];
         std::cout << "A " << current_enemy << " has appeared\n";
         std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
-        while(ehealth > 0 || Player.health>0){
-            int edamage_done = edamage - round(Player.defence/5);
+        while(ehealth > 0 || this->health>0){
+            int edamage_done = edamage - round(this->defence/5);
             if(edamage_done<=0){
-                Player.health-=0;
+                this->health-=0;
             }else{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-                std::cout << "You have "<<Player.health << " health and the enemy has " << ehealth << "health\n";
-                Player.health-=edamage_done;
-                int damage_done = rand()%(Player.defence+5);
+                std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
+                this->health-=edamage_done;
+                int damage_done = rand()%(this->defence+5);
                 if(damage_done<=0){
                     ehealth-=0;
                 }else{
                     ehealth-=damage_done;
                 }
             }
-            if(Player.health<=0){
-                if(Player.health_pots>=1){
-                    Player.heal(Player);
+            if(this->health<=0){
+                if(this->health_pots>=1){
+                    this->heal(Player);
                     std::cout << "You make one last stand against the " <<current_enemy << "\n";
                 }else{
                     std::cout << "You have died\n";
-                    Player.alive=false;
+                    this->alive=false;
+                    exit(0);
                     break;
                 }
             }
             if(ehealth<=0){
-                Player.gold+=reward;
-                Player.xp+=xp_reward;
+                this->gold+=reward;
+                this->xp+=xp_reward;
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-                std::cout << "The " << current_enemy << "has been slain\n";
-                std::cout << "You have gained" << reward << " gold. You now have " << Player.gold << " gold\n";
-                std::cout << "You gained " << xp_reward << " xp. You now have " << Player.xp << " xp\n";
-                std::cout << "Your health is " <<Player.health << "\n";    
-                Player.playing(Player);            
+                std::cout << "The " << current_enemy << " has been slain\n";
+                std::cout << "You have gained " << reward << " gold. You now have " << this->gold << " gold\n";
+                std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                std::cout << "Your health is " <<this->health << "\n";    
+                this->playing(Player);            
             }
         }
     }
@@ -126,14 +129,14 @@ class Player{
             }
             std::cout << "\nWhat armour set would you like to buy?\n";
             std::cin >> to_buy;
-            if(armour_stats[1][to_buy-1] <= Player.gold){
-                        Player.armour = (armour[to_buy - 1]);
-                        Player.defence = armour_stats[0][to_buy - 1] / 2;
-                        Player.gold -= armour_stats[1][to_buy - 1];
-                        Player.adefence = Player.defence + Player.defence_increase;
-                        std::cout << "You now have " << Player.armour << "\n";
-                        std::cout << "Your defence is now " << Player.adefence << "\n";
-                        std::cout << "Your gold is now " << Player.gold << "\n";
+            if(armour_stats[1][to_buy-1] <= this->gold){
+                        this->armour = (armour[to_buy - 1]);
+                        this->defence = armour_stats[0][to_buy - 1] / 2;
+                        this->gold -= armour_stats[1][to_buy - 1];
+                        this->adefence = this->defence + this->defence_increase;
+                        std::cout << "You now have " << this->armour << "\n";
+                        std::cout << "Your defence is now " << this->adefence << "\n";
+                        std::cout << "Your gold is now " << this->gold << "\n";
             }else{
                 std::cout << "You cannot afford this\n";
             }
@@ -143,32 +146,32 @@ class Player{
             }
             std::cout << "What weapon would you like to buy\n";
             std::cin >> to_buy;
-            if(weapon_stats[1][to_buy-1] <= Player.gold){
-                        Player.weapon = weapons[to_buy - 1];
-                        Player.damage = weapon_stats[0] [to_buy - 1];
-                        Player.gold -= weapon_stats[1][to_buy - 1];
-                        Player.adamage = Player.damage + Player.damage_increase;
-                        std::cout <<"You now have " << Player.weapon << "\n";
-                        std::cout <<"Your defence is now " << Player.adamage << "\n";
-                        std::cout <<"Your gold is now " << Player.gold << "\n";
+            if(weapon_stats[1][to_buy-1] <= this->gold){
+                        this->weapon = weapons[to_buy - 1];
+                        this->damage = weapon_stats[0] [to_buy - 1];
+                        this->gold -= weapon_stats[1][to_buy - 1];
+                        this->adamage = this->damage + this->damage_increase;
+                        std::cout <<"You now have " << this->weapon << "\n";
+                        std::cout <<"Your defence is now " << this->adamage << "\n";
+                        std::cout <<"Your gold is now " << this->gold << "\n";
             }else{
                 std::cout << "You cannot afford this\n";
             }
         }else if(choice=="potions"){
-            std::cout << "Health potions are useful as they heal you, they cost " << Player.health_pots_price << "\n";
+            std::cout << "Health potions are useful as they heal you, they cost " << this->health_pots_price << "\n";
             std::cout << "How many health potions would you like to buy\n";
             int amount;
             std::cin >> amount;
-            int price = Player.health_pots_price*amount;
-            if(price <= Player.gold){
-                std::cout << "The cost for the health potions is " << price << " are you sure you wannna buy them, after this you will have " << (Player.gold-price) << " gold\n";
+            int price = this->health_pots_price*amount;
+            if(price <= this->gold){
+                std::cout << "The cost for the health potions is " << price << " are you sure you wannna buy them, after this you will have " << (this->gold-price) << " gold\n";
                 std::string confirm;
                 std::cin >> confirm;
                 if(confirm=="yes"){
-                    Player.gold-=price;
-                    Player.health_pots +=amount;
-                    std::cout << "You have " << Player.health_pots << "health potions\n";
-                    std::cout << "Your gold is " << Player.gold << "\n";
+                    this->gold-=price;
+                    this->health_pots +=amount;
+                    std::cout << "You have " << this->health_pots << " health potions\n";
+                    std::cout << "Your gold is " << this->gold << "\n";
                 }else{
                     std::cout << "\n";
                 }
@@ -176,93 +179,94 @@ class Player{
                 std::cout << "You cannot afford this\n";
             }
         }else{
-            Player.shop(Player);
+            return ;
         }
     }
     void inv(Player Player){
-            std::cout << "You have " << Player.gold << " gold\n";
-            std::cout << "The weapon you have equipped is " << Player.weapon << " which allows you to hit for " << Player.adamage << "\n";
-            std::cout << "You have " << Player.armour << " equipped with a defence of " << Player.adefence << "\n";
-            std::cout << "You have " << Player.health << " health\n";
-            std::cout << "You have " << Player.health_pots << " health potions\n";
-            std::cout << "You are level " << Player.level << "\n";
+            std::cout << "You have " << this->gold << " gold\n";
+            std::cout << "The weapon you have equipped is " << this->weapon << " which allows you to hit for " << this->adamage << "\n";
+            std::cout << "You have " << this->armour << " equipped with a defence of " << this->adefence << "\n";
+            std::cout << "You have " << this->health << " health\n";
+            std::cout << "You have " << this->health_pots << " health potions\n";
+            std::cout << this->xp << "/" << this->xp_needed <<"\n";
+            std::cout << "You are level " << this->level << "\n";
     }
     void heal(Player Player){
         int health_pot_value=rand()%20+10;
-        while(Player.health_pots>0){
+        while(this->health_pots>0){
             std::cout << "Would you like to heal with a health potion\n";
             std::string action;
             std::cin >> action;
             if(action == "yes"){
-                Player.health+=health_pot_value;
-                Player.health_pots--;
-                if(Player.health>Player.max_health){
-                    Player.health=Player.max_health;
+                this->health+=health_pot_value;
+                this->health_pots-=1;
+                if(this->health>this->max_health){
+                    this->health=this->max_health;
                 }
-                std::cout << "You have been healed, your health is now " << Player.health << "\n";
+                std::cout << "You have been healed, your health is now " << this->health << "\n";
             }else if(action=="no"){
-                Player.playing(Player);
+                return ;
             }else{
                 std::cout << "Please enter yes or no\n";
-                Player.heal(Player);
+                return ;
             }
         }
-        if(Player.health_pots<=0){
+        if(this->health_pots<=0){
             std::cout << "It seems that you don't have any health potions,why don't you buy one \n";
         }
     }
     void levelling(Player Player){
-            Player.xp_needed = Player.xp + Player.level * 50 + 100;
-            Player.level++;
-            Player.max_health += Player.max_health / 50;
-            Player.health = Player.max_health;
-            Player.damage_increase += Player.adamage / 15;
-            Player.defence_increase += Player.adefence / 15;
-            Player.adamage = Player.damage + Player.damage_increase;
-            Player.adefence = Player.defence + Player.defence_increase;
+            this->xp_needed = this->xp + this->level * 50 + 100;
+            this->level++;
+            this->max_health += this->max_health / 50;
+            this->health = this->max_health;
+            this->damage_increase += this->adamage / 15;
+            this->defence_increase += this->adefence / 15;
+            this->adamage = this->damage + this->damage_increase;
+            this->adefence = this->defence + this->defence_increase;
             std::cout << "Do you want to boost your Defence, Damage, or Health\n";
             std::string choice;
             std::cin >> choice;
             if(choice == "defence"){
-                Player.adefence+=Player.adefence/25;
-                std::cout << "You have chosen to strengthen your battlements against the hordes of enemies to a defence of " << Player.adefence << "\n";
+                this->adefence+=this->adefence/25;
+                std::cout << "You have chosen to strengthen your battlements against the hordes of enemies to a defence of " << this->adefence << "\n";
             }else if(choice == "damage"){
-                Player.adamage += Player.adamage / 25;
-                std::cout << "You have chosen to stiffen your blows against the hordes of enemies to hit for " << Player.adamage + " damage\n";
+                this->adamage += this->adamage / 25;
+                std::cout << "You have chosen to stiffen your blows against the hordes of enemies to hit for " << this->adamage + " damage\n";
             }else if(choice=="health"){
-                Player.max_health += Player.max_health / 25;
-                Player.health = Player.max_health;
-                std::cout << "You have chosen to increase your resolve against the hordes of enemies to a maximum of " << Player.max_health + " HP\n";
+                this->max_health += this->max_health / 25;
+                this->health = this->max_health;
+                std::cout << "You have chosen to increase your resolve against the hordes of enemies to a maximum of " << this->max_health + " HP\n";
             }else{
                 std::cout << "You have chosen to forfeit your chance to increase one stat further\n";
             }
-            std::cout << "You have defeated enough monsters to level up to Level:" << Player.level << "\n";
+            std::cout << "You have defeated enough monsters to level up to Level: " << this->level << "\n";
     }
     void playing(Player Player){
-        while(Player.alive==true){
-            if(Player.xp>=Player.xp_needed){
-                Player.levelling(Player);
+        while(this->alive==true){
+            if(this->xp>=this->xp_needed){
+                this->levelling(Player);
             }
             std::cout << "What command do you want to input\n";
             std::string action;
             std::cin >> action;
             if(action == "inv"){
-                Player.inv(Player);
-                Player.playing(Player);
+                this->inv(Player);
+                this->playing(Player);
             }else if(action == "commands"){
-                Player.commands();
-                Player.playing(Player);
+                this->commands();
+                this->playing(Player);
             }else if(action == "fight"){
-                Player.fight(Player);
-                Player.playing(Player);
+                this->fight(Player);
+                this->playing(Player);
             }else if(action == "shop"){
-                Player.shop(Player);
-                Player.playing(Player);
+                this->shop(Player);
+                this->playing(Player);
             }else if(action == "heal"){
-                Player.heal(Player);
-                Player.playing(Player);
+                this->heal(Player);
+                this->playing(Player);
             }else{
-                Player.playing(Player);
+                this->playing(Player);
             }
         }
     }
@@ -272,15 +276,15 @@ class Player{
         std::cin >> choice;
         if(choice=="play"){
             std::cout << "You awake in a place you don't recognise and have a feeling you aren't safe there.\n";
-            Player.alive=true;
-            Player.playing(Player);
+            this->alive=true;
+            this->playing(Player);
         }else if(choice == "commands"){
-            Player.commands();
-            Player.idle(Player);
+            this->commands();
+            this->idle(Player);
         }else if(choice=="leave"){
             exit(0);
         }else{
-            Player.idle(Player);
+            this->idle(Player);
         }
     }
 };
@@ -298,7 +302,7 @@ class Knight : public Player{
             level = 5;
             adamage = damage + damage_increase;
     }
-    void fight(Player Player){
+    void fight(Knight Knight){
         std::string enemy[6] = {"skeleton", "zombie", "slime", "ghost", "goblin", "rat"};
         int enemy_stats[4] [6]= { { rand()%31+15, rand()%11+5, rand()%6+5, rand()%5+1, rand()%21+20, rand()%3+1 },
             { 15, 10, 5, 1, 13, 2 },
@@ -308,81 +312,126 @@ class Knight : public Player{
         std::string current_enemy = enemy[index];
         int ehealth;
         int edamage;
-        if (Player.level<2){
+        if (this->level<2){
             ehealth = enemy_stats[0][index];
             edamage = enemy_stats[1][index];
         }else{
-            ehealth = round(enemy_stats[0][index]*(sqrt(Player.level)));
-            edamage = round(enemy_stats[1][index]*(sqrt(Player.level)));
+            ehealth = round(enemy_stats[0][index]*(sqrt(this->level)));
+            edamage = round(enemy_stats[1][index]*(sqrt(this->level)));
             }
         int reward = enemy_stats[2][index];
         int xp_reward = enemy_stats[3][index];
         std::cout << "A " << current_enemy << " has appeared\n";
         std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
-        while(ehealth > 0 || Player.health>0){
-            int edamage_done = edamage - round(Player.defence/5);
-            int luck = rand()%101/100;
+        while(ehealth > 0 || this->health>0){
+            int edamage_done = edamage - round(this->defence/5);
+            int luck = rand()%101;
             int effect=1;
-            if(luck>=0.85){
+            if(luck>=85){
                 effect=2;
                 std::cout << "Your training as a knight allow you to hit for twice the damage\n";
             }
             if(edamage_done<=0){
-                Player.health-=0;
+                this->health-=0;
             }else{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-                std::cout << "You have "<<Player.health << " health and the enemy has " << ehealth << " health\n";
-                Player.health-=edamage_done;
-                int damage_done = rand()%(Player.defence+5);
+                std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
+                this->health-=edamage_done;
+                int damage_done = rand()%(this->defence+5);
                 if(damage_done<=0){
                     ehealth-=0;
                 }else{
                     ehealth-=damage_done*effect;
                 }
             }
-            if(Player.health<=0){
-                if(Player.health_pots>=1){
-                    Player.heal(Player);
+            if(this->health<=0){
+                if(this->health_pots>=1){
+                    this->heal(Knight);
                     std::cout << "You make one last stand against the " << current_enemy << "\n";
                 }else{
                     std::cout << "You have died\n";
-                    Player.alive=false;
+                    this->alive=false;
                     break;
                 }
             }
             if(ehealth<=0){
-                Player.gold+=reward;
-                Player.xp+=xp_reward;
+                this->gold+=reward;
+                this->xp+=xp_reward;
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
                 std::cout << "The " << current_enemy << " has been slain\n";
-                std::cout << "You have gained" << reward << " gold. You now have " << Player.gold << " gold\n";
-                std::cout << "You gained " << xp_reward << " xp. You now have " << Player.xp << " xp\n";
-                std::cout << "Your health is " <<Player.health << "\n";    
-                Player.playing(Player);            
+                std::cout << "You have gained " << reward << " gold. You now have " << this->gold << " gold\n";
+                std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                std::cout << "Your health is " <<this->health << "\n";    
+                this->playing(Knight);            
             }
+        }
+    }
+        void playing(Knight Knight){
+        while(this->alive==true){
+            if(this->xp>=this->xp_needed){
+                this->levelling(Knight);
+            }
+            std::cout << "What command do you want to input\n";
+            std::string action;
+            std::cin >> action;
+            if(action == "inv"){
+                this->inv(Knight);
+                this->playing(Knight);
+            }else if(action == "commands"){
+                this->commands();
+                this->playing(Knight);
+            }else if(action == "fight"){
+                this->fight(Knight);
+                this->playing(Knight);
+            }else if(action == "shop"){
+                this->shop(Knight);
+                this->playing(Knight);
+            }else if(action == "heal"){
+                this->heal(Knight);
+                this->playing(Knight);
+            }else{
+                this->playing(Knight);
+            }
+        }
+    }
+    void idle(Knight Knight){
+        std::cout << "Do you want to Play, leave, or see commands\n";
+        std::string choice;
+        std::cin >> choice;
+        if(choice=="play"){
+            std::cout << "You awake in a place you don't recognise and have a feeling you aren't safe there.\n";
+            this->alive=true;
+            this->playing(Knight);
+        }else if(choice == "commands"){
+            this->commands();
+            this->idle(Knight);
+        }else if(choice=="leave"){
+            exit(0);
+        }else{
+            this->idle(Knight);
         }
     }
 };
 
-class merchant:public Player{
+class Merchant:public Player{
     public:
-    merchant(){
+    Merchant(){
             max_health = 75;
             damage = 0;
             health_pots = 0;
             gold = rand()%101+50;
-            armour = "Garbs of the Merchant Guilds";
+            armour = "Garbs of the merchant Guilds";
             level = 3;
             health_pots_price = rand()%11+5;
             adamage = damage + damage_increase;
     }
-        void fight(Player Player){
-            std::cout << "You have the choice to pay the monsters 15 gold to leave you alone\n";
+        void fight(Merchant Merchant){
+            std::cout << "You have the choice to pay the monsters 15 gold to leave you alone. Yes or No\n";
             std::string choice;
             std::cin >> choice;
             if(choice=="yes"){
-                if(Player.gold>=15){
-                    Player.gold-=15;
+                if(this->gold>=15){
+                    this->gold-=15;
                     std::cout << "They take your gold and leave you be... for now\n";
                     return ;
                 }else{
@@ -400,59 +449,104 @@ class merchant:public Player{
             std::string current_enemy = enemy[index];
             int ehealth;
             int edamage;
-            if (Player.level<2){
+            if (this->level<2){
                 ehealth = enemy_stats[0][index];
                 edamage = enemy_stats[1][index];
             }else{
-                ehealth = round(enemy_stats[0][index]*(sqrt(Player.level)));
-                edamage = round(enemy_stats[1][index]*(sqrt(Player.level)));
+                ehealth = round(enemy_stats[0][index]*(sqrt(this->level)));
+                edamage = round(enemy_stats[1][index]*(sqrt(this->level)));
                 }
             int reward = enemy_stats[2][index];
             int xp_reward = enemy_stats[3][index];
             std::cout << "A " << current_enemy << " has appeared\n";
             std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
-            while(ehealth > 0 || Player.health>0){
-                int edamage_done = edamage - round(Player.defence/5);
+            while(ehealth > 0 || this->health>0){
+                int edamage_done = edamage - round(this->defence/5);
                 if(edamage_done<=0){
-                    Player.health-=0;
+                    this->health-=0;
                 }else{
                     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-                    std::cout << "You have "<<Player.health << " health and the enemy has " << ehealth << " health\n";
-                    Player.health-=edamage_done;
-                    int damage_done = rand()%(Player.defence+5);
+                    std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
+                    this->health-=edamage_done;
+                    int damage_done = rand()%(this->defence+5);
                     if(damage_done<=0){
                         ehealth-=0;
                     }else{
                         ehealth-=damage_done;
                     }
                 }
-                if(Player.health<=0){
-                    if(Player.health_pots>=1){
-                        Player.heal(Player);
+                if(this->health<=0){
+                    if(this->health_pots>=1){
+                        this->heal(Merchant);
                         std::cout << "You make one last stand against the " <<current_enemy << "\n";
                     }else{
                         std::cout << "You have died\n";
-                        Player.alive=false;
+                        this->alive=false;
                         break;
                     }
                 }
                 if(ehealth<=0){
-                    Player.gold+=reward;
-                    Player.xp+=xp_reward;
+                    this->gold+=reward;
+                    this->xp+=xp_reward;
                     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
                     std::cout << "The " << current_enemy << " has been slain\n";
-                    std::cout << "You have gained" << reward << " gold. You now have " << Player.gold << " gold\n";
-                    std::cout << "You gained " << xp_reward << " xp. You now have " << Player.xp << " xp\n";
-                    std::cout << "Your health is " <<Player.health << "\n";    
-                    Player.playing(Player);            
+                    std::cout << "You have gained " << reward << " gold. You now have " << this->gold << " gold\n";
+                    std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                    std::cout << "Your health is " <<this->health << "\n";    
+                    this->playing(Merchant);            
                 }
         }    
     }
+        void playing(Merchant Merchant){
+        while(this->alive==true){
+            if(this->xp>=this->xp_needed){
+                this->levelling(Merchant);
+            }
+            std::cout << "What command do you want to input\n";
+            std::string action;
+            std::cin >> action;
+            if(action == "inv"){
+                this->inv(Merchant);
+                this->playing(Merchant);
+            }else if(action == "commands"){
+                this->commands();
+                this->playing(Merchant);
+            }else if(action == "fight"){
+                this->fight(Merchant);
+                this->playing(Merchant);
+            }else if(action == "shop"){
+                this->shop(Merchant);
+                this->playing(Merchant);
+            }else if(action == "heal"){
+                this->heal(Merchant);
+                this->playing(Merchant);
+            }else{
+                this->playing(Merchant);
+            }
+        }
+    }
+    void idle(Merchant Merchant){
+        std::cout << "Do you want to Play, leave, or see commands\n";
+        std::string choice;
+        std::cin >> choice;
+        if(choice=="play"){
+            std::cout << "You awake in a place you don't recognise and have a feeling you aren't safe there.\n";
+            this->alive=true;
+            this->playing(Merchant);
+        }else if(choice == "commands"){
+            this->commands();
+            this->idle(Merchant);
+        }else if(choice=="leave"){
+            exit(0);
+        }else{
+            this->idle(Merchant);
+        }
+    }
 };
 
-class healer : public Player{
+class Healer : public Player{
     public:
-    healer(){
+    Healer(){
         health_pots = 12;
         damage = 1;
         defence = 15;
@@ -462,7 +556,7 @@ class healer : public Player{
         health_pots_price = rand()%11+5;
         adamage = damage + damage_increase;
     }
-    void fight(Player Player){
+    void fight(Healer Healer){
         std::string enemy[6] = {"skeleton", "zombie", "slime", "ghost", "goblin", "rat"};
         int enemy_stats[4] [6]= { { rand()%31+15, rand()%11+5, rand()%6+5, rand()%5+1, rand()%21+20, rand()%3+1 },
             { 15, 10, 5, 1, 13, 2 },
@@ -472,63 +566,111 @@ class healer : public Player{
         std::string current_enemy = enemy[index];
         int ehealth;
         int edamage;
-        if (Player.level<2){
+        if (this->level<2){
             ehealth = enemy_stats[0][index];
             edamage = enemy_stats[1][index];
         }else{
-            ehealth = round(enemy_stats[0][index]*(sqrt(Player.level)));
-            edamage = round(enemy_stats[1][index]*(sqrt(Player.level)));
+            ehealth = round(enemy_stats[0][index]*(sqrt(this->level)));
+            edamage = round(enemy_stats[1][index]*(sqrt(this->level)));
             }
         int reward = enemy_stats[2][index];
         int xp_reward = enemy_stats[3][index];
         std::cout << "A " << current_enemy << " has appeared\n";
         std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
-        while(ehealth > 0 || Player.health>0){
-            int edamage_done = edamage - round(Player.defence/5);
-            int luck = rand()%101/100;
+        while(ehealth > 0 || this->health>0){
+            int edamage_done = edamage - round(this->defence/5);
+            int luck = rand()%101;
             int effect=1;
-            if(luck>=0.85){
+            std::cout << "LUCK IS " << luck <<"\n";
+            if(luck>=85){
                 effect=0;
                 std::cout << "Your heightened senses of danger have allowed you to avoid the enemies attack\n";
             }
+            std::cout << "RUNNING NORMALLY\n";
             if(edamage_done<=0){
-                Player.health-=0;
+                this->health-=0;
             }else{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
-                std::cout << "You have "<<Player.health << " health and the enemy has " << ehealth << " health\n";
-                Player.health-=edamage_done;
-                int damage_done = rand()%(Player.defence+5);
+                std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
+                this->health-=edamage_done*effect;
+                int damage_done = rand()%(this->defence+5);
                 if(damage_done<=0){
                     ehealth-=0;
                 }else{
-                    ehealth-=damage_done*effect;
+                    ehealth-=damage_done;
                 }
             }
-            if(Player.health<=0){
-                if(Player.health_pots>=1){
-                    Player.heal(Player);
+            if(this->health<=0){
+                if(this->health_pots>=1){
+                    this->heal(Healer);
                     std::cout << "You make one last stand against the " <<current_enemy << "\n";
                 }else{
                     std::cout << "You have died\n";
-                    Player.alive=false;
+                    this->alive=false;
                     break;
                 }
             }
             if(ehealth<=0){
-                Player.gold+=reward;
-                Player.xp+=xp_reward;
+                this->gold+=reward;
+                this->xp+=xp_reward;
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
                 std::cout << "The " << current_enemy << " has been slain\n";
-                std::cout << "You have gained" << reward << " gold. You now have " << Player.gold << " gold\n";
-                std::cout << "You gained " << xp_reward << " xp. You now have " << Player.xp << " xp\n";
-                std::cout << "Your health is " << Player.health << "\n";       
-                Player.playing(Player);            
+                std::cout << "You have gained " << reward << " gold. You now have " << this->gold << " gold\n";
+                std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                std::cout << "Your health is " << this->health << "\n";       
+                this->playing(Healer);            
             }
+        }
+    }
+    void playing(Healer Healer){
+        while(this->alive==true){
+            if(this->xp>=this->xp_needed){
+                this->levelling(Healer);
+            }
+            std::cout << "What command do you want to input\n";
+            std::string action;
+            std::cin >> action;
+            if(action == "inv"){
+                this->inv(Healer);
+                this->playing(Healer);
+            }else if(action == "commands"){
+                this->commands();
+                this->playing(Healer);
+            }else if(action == "fight"){
+                this->fight(Healer);
+                this->playing(Healer);
+            }else if(action == "shop"){
+                this->shop(Healer);
+                this->playing(Healer);
+            }else if(action == "heal"){
+                this->heal(Healer);
+                this->playing(Healer);
+            }else{
+                this->playing(Healer);
+            }
+        }
+    }
+    void idle(Healer Healer){
+        std::cout << "Do you want to Play, leave, or see commands\n";
+        std::string choice;
+        std::cin >> choice;
+        if(choice=="play"){
+            std::cout << "You awake in a place you don't recognise and have a feeling you aren't safe there.\n";
+            this->alive=true;
+            this->playing(Healer);
+        }else if(choice == "commands"){
+            this->commands();
+            this->idle(Healer);
+        }else if(choice=="leave"){
+            exit(0);
+        }else{
+            this->idle(Healer);
         }
     }
 };
 
 int main(){
+    srand(std::time(0));
     std::cout << "Do you want to be play as the knight, merchant, healer, or base class\n";
     std::string choice;
     std::cin >> choice;
@@ -538,11 +680,11 @@ int main(){
         character.idle(character);       
     }else if(choice == "merchant"){
         std::cout << "You have chosen to be become a wealthy merchant of the guilds: Rich and Vain\n";
-        merchant character;
+        Merchant character;
         character.idle(character);
     }else if(choice == "healer"){
         std::cout << "You have chosen to become a healer of the clerical class: Regal yet Tough\n";
-        healer character;
+        Healer character;
         character.idle(character);
     }else{
         Player character;
