@@ -358,7 +358,7 @@ class Player{
                 }
                 else if( ehealth <=0 && poisoned==true){
                     ehealth=this->max_health/3;
-                    edamage=60;
+                    edamage+=this->adamage;
                     std::cout << boss << " steals part of your lifeforce as you cut him down\n";
                     std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
                 }
@@ -558,7 +558,7 @@ class Knight : public Player{
                 }
                 else if( ehealth <=0 && poisoned==true){
                     ehealth=this->max_health/3;
-                    edamage=60;
+                    edamage+=this->adamage;
                     std::cout << boss << " steals  part of your lifeforce as you cut him down\n";
                     std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
                 }
@@ -765,7 +765,7 @@ class Merchant:public Player{
                 }
                 else if( ehealth <=0 && poisoned==true){
                     ehealth=this->max_health/3;
-                    edamage=60;
+                    edamage+=this->adamage;
                     std::cout << boss << " steals part of your lifeforce as you cut him down\n";
                     std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
                 }
@@ -966,7 +966,7 @@ class Healer : public Player{
                 }
                 else if( ehealth <=0 && poisoned==true){
                     ehealth=this->max_health/3;
-                    edamage=60;
+                    edamage+=this->adamage;
                     std::cout << boss << " steals part of your lifeforce as you cut him down\n";
                     std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
                 }
