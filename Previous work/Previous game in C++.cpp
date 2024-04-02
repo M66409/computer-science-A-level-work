@@ -54,7 +54,6 @@ class Player{
     }
 
     void fight(Player Player){
-        std::cout << "AAAAAAAAAA\n";
         std::string enemy[6] = {"skeleton", "zombie", "slime", "ghost", "goblin", "rat"};
         int enemy_stats[4] [6]= { { rand()%31+15, rand()%11+5, rand()%6+5, rand()%5+1, rand()%21+20, rand()%3+1 },
                                   { 15, 10, 5, 1, 13, 2 },
@@ -76,14 +75,14 @@ class Player{
         std::cout << "A " << current_enemy << " has appeared\n";
         std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
         while(ehealth > 0 || this->health>0){
-            int edamage_done = edamage - round(this->defence/5);
+            int edamage_done = edamage - round(this->adefence/5);
             if(edamage_done<=0){
                 this->health-=0;
             }else{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
                 std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
                 this->health-=edamage_done;
-                int damage_done = rand()%(this->defence+5);
+                int damage_done = rand()%(this->adamage+5);
                 if(damage_done<=0){
                     ehealth-=0;
                 }else{
@@ -265,11 +264,22 @@ class Player{
             }else if(action == "heal"){
                 this->heal(Player);
                 this->playing(Player);
+            }else if(action == "boss"){
+                std::cout << "Are you sure that you want to face the boss, he is incredibly difficult\n";
+                std::string choice;
+                std::cin >> choice;
+                if (choice == "yes"){
+                    this->boss(Player);
+                }
+                else{
+                    this->playing(Player);
+                }
             }else{
                 this->playing(Player);
             }
         }
     }
+
     void idle(Player Player){
         std::cout << "Do you want to Play, leave, or see commands\n";
         std::string choice;
@@ -285,6 +295,73 @@ class Player{
             exit(0);
         }else{
             this->idle(Player);
+        }
+    }
+    
+    void boss(Player Player){    
+        std::cout << "A towering visage appears infront of you as you challenge the Lord of the Dead , King of the Skeletons: AZEROTH the Despoiler\n";
+        std::string boss="AZEROTH";
+        int ehealth = 75;
+        int edamage = 30;
+        int gold_reward = 200;
+        int xp_reward = 150 ; 
+        bool poisoned = false;
+        while(ehealth >=0 || this->health>=0){
+            int temp_damage=this->adamage;
+            int temp_defence=this->adefence;
+            if(poisoned==true){
+                this->adamage*=0.95;
+                this->adefence*=0.95;
+                temp_damage=this->adamage/=2;
+                temp_defence=this->adefence/=2;
+            }
+            std::cout <<"Your damage is: " << temp_damage << "\n";
+            std::cout << "Your defence is: " <<temp_defence << "\n";
+            int rng = rand()%101;
+            if(rng>=85){
+                poisoned=true;
+                std::cout << boss <<" has poisoned you, next turn your stats will be halved \n";
+            }
+            int edamage_done = edamage - round(temp_defence/5);
+                if(edamage_done<=0){
+                    this->health-=0;
+                }else{
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << "You have "<<this->health << " health and  "<< boss << " has " << ehealth << " health\n";
+                    this->health-=edamage_done;
+                    int damage_done = rand()%(temp_damage+5);
+                    if(damage_done<=0){
+                        ehealth-=0;
+                    }else{
+                        ehealth-=damage_done;
+                    }
+                }
+                if(this->health<=0){
+                    if(this->health_pots>=1){
+                        this->heal(Player);
+                        std::cout << "You make one last stand against " <<boss<< "\n";
+                    }else{
+                        std::cout << "You have died\n";
+                        this->alive=false;
+                        break;
+                    }
+                }
+                if(ehealth<=0 && poisoned==false){
+                    this->gold+=gold_reward;
+                    this->xp+=xp_reward;
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << boss << " has been slain\n";
+                    std::cout << "You have gained " << gold_reward << " gold. You now have " << this->gold << " gold\n";
+                    std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                    std::cout << "Your health is " <<this->health << "\n";    
+                    this->playing(Player);            
+                }
+                else if( ehealth <=0 && poisoned==true){
+                    ehealth=this->max_health/3;
+                    edamage=60;
+                    std::cout << boss << " steals part of your lifeforce as you cut him down\n";
+                    std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
+                }
         }
     }
 };
@@ -324,7 +401,7 @@ class Knight : public Player{
         std::cout << "A " << current_enemy << " has appeared\n";
         std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
         while(ehealth > 0 || this->health>0){
-            int edamage_done = edamage - round(this->defence/5);
+            int edamage_done = edamage - round(this->adefence/5);
             int luck = rand()%101;
             int effect=1;
             if(luck>=85){
@@ -337,7 +414,7 @@ class Knight : public Player{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
                 std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
                 this->health-=edamage_done;
-                int damage_done = rand()%(this->defence+5);
+                int damage_done = rand()%(this->adamage+5);
                 if(damage_done<=0){
                     ehealth-=0;
                 }else{
@@ -389,6 +466,16 @@ class Knight : public Player{
             }else if(action == "heal"){
                 this->heal(Knight);
                 this->playing(Knight);
+            }else if(action == "boss"){
+                std::cout << "Are you sure that you want to face the boss, he is incredibly difficult\n";
+                std::string choice;
+                std::cin >> choice;
+                if (choice == "yes"){
+                    this->boss(Knight);
+                }
+                else{
+                    this->playing(Knight);
+                }
             }else{
                 this->playing(Knight);
             }
@@ -409,6 +496,72 @@ class Knight : public Player{
             exit(0);
         }else{
             this->idle(Knight);
+        }
+    }
+    void boss(Knight Knight){    
+        std::cout << "A towering visage appears infront of you as you challenge the Lord of the Dead , King of the Skeletons: AZEROTH the Despoiler\n";
+        std::string boss="AZEROTH";
+        int ehealth = 75;
+        int edamage = 30;
+        int gold_reward = 200;
+        int xp_reward = 150 ; 
+        bool poisoned = false;
+        while(ehealth >=0 || this->health>=0){
+            int temp_damage=this->adamage;
+            int temp_defence=this->adefence;
+            if(poisoned==true){
+                this->adamage*=0.95;
+                this->adefence*=0.95;
+                temp_damage=this->adamage/=2;
+                temp_defence=this->adefence/=2;
+            }
+            std::cout <<"Your damage is: " << temp_damage << "\n";
+            std::cout << "Your defence is: " <<temp_defence << "\n";
+            int rng = rand()%101;
+            if(rng>=85){
+                poisoned=true;
+                std::cout << boss <<" has poisoned you, next turn your stats will be halved \n";
+            }
+            int edamage_done = edamage - round(temp_defence/5);
+                if(edamage_done<=0){
+                    this->health-=0;
+                }else{
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << "You have "<<this->health << " health and  "<< boss << " has " << ehealth << " health\n";
+                    this->health-=edamage_done;
+                    int damage_done = rand()%(temp_damage+5);
+                    if(damage_done<=0){
+                        ehealth-=0;
+                    }else{
+                        ehealth-=damage_done;
+                    }
+                }
+                if(this->health<=0){
+                    if(this->health_pots>=1){
+                        this->heal(Knight);
+                        std::cout << "You make one last stand against " <<boss<< "\n";
+                    }else{
+                        std::cout << "You have died\n";
+                        this->alive=false;
+                        break;
+                    }
+                }
+                if(ehealth<=0 && poisoned==false){
+                    this->gold+=gold_reward;
+                    this->xp+=xp_reward;
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << boss << " has been slain\n";
+                    std::cout << "You have gained " << gold_reward << " gold. You now have " << this->gold << " gold\n";
+                    std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                    std::cout << "Your health is " <<this->health << "\n";    
+                    this->playing(Knight);            
+                }
+                else if( ehealth <=0 && poisoned==true){
+                    ehealth=this->max_health/3;
+                    edamage=60;
+                    std::cout << boss << " steals  part of your lifeforce as you cut him down\n";
+                    std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
+                }
         }
     }
 };
@@ -461,14 +614,14 @@ class Merchant:public Player{
             std::cout << "A " << current_enemy << " has appeared\n";
             std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
             while(ehealth > 0 || this->health>0){
-                int edamage_done = edamage - round(this->defence/5);
+                int edamage_done = edamage - round(this->adefence/5);
                 if(edamage_done<=0){
                     this->health-=0;
                 }else{
                     std::this_thread::sleep_for(std::chrono::milliseconds(1500));
                     std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
                     this->health-=edamage_done;
-                    int damage_done = rand()%(this->defence+5);
+                    int damage_done = rand()%(this->adamage+5);
                     if(damage_done<=0){
                         ehealth-=0;
                     }else{
@@ -520,6 +673,16 @@ class Merchant:public Player{
             }else if(action == "heal"){
                 this->heal(Merchant);
                 this->playing(Merchant);
+            }else if(action == "boss"){
+                std::cout << "Are you sure that you want to face the boss, he is incredibly difficult\n";
+                std::string choice;
+                std::cin >> choice;
+                if (choice == "yes"){
+                    this->boss(Merchant);
+                }
+                else{
+                    this->playing(Merchant);
+                }
             }else{
                 this->playing(Merchant);
             }
@@ -540,6 +703,72 @@ class Merchant:public Player{
             exit(0);
         }else{
             this->idle(Merchant);
+        }
+    }
+    void boss(Merchant Merchant){    
+        std::cout << "A towering visage appears infront of you as you challenge the Lord of the Dead , King of the Skeletons: AZEROTH the Despoiler\n";
+        std::string boss="AZEROTH";
+        int ehealth = 75;
+        int edamage = 30;
+        int gold_reward = 200;
+        int xp_reward = 150 ; 
+        bool poisoned = false;
+        while(ehealth >=0 || this->health>=0){
+            int temp_damage=this->adamage;
+            int temp_defence=this->adefence;
+            if(poisoned==true){
+                this->adamage*=0.95;
+                this->adefence*=0.95;
+                temp_damage=this->adamage/=2;
+                temp_defence=this->adefence/=2;
+            }
+            std::cout <<"Your damage is: " << temp_damage << "\n";
+            std::cout << "Your defence is: " <<temp_defence << "\n";
+            int rng = rand()%101;
+            if(rng>=85){
+                poisoned=true;
+                std::cout << boss <<" has poisoned you, next turn your stats will be halved \n";
+            }
+            int edamage_done = edamage - round(temp_defence/5);
+                if(edamage_done<=0){
+                    this->health-=0;
+                }else{
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << "You have "<<this->health << " health and  "<< boss << " has " << ehealth << " health\n";
+                    this->health-=edamage_done;
+                    int damage_done = rand()%(temp_damage+5);
+                    if(damage_done<=0){
+                        ehealth-=0;
+                    }else{
+                        ehealth-=damage_done;
+                    }
+                }
+                if(this->health<=0){
+                    if(this->health_pots>=1){
+                        this->heal(Merchant);
+                        std::cout << "You make one last stand against " <<boss<< "\n";
+                    }else{
+                        std::cout << "You have died\n";
+                        this->alive=false;
+                        break;
+                    }
+                }
+                if(ehealth<=0 && poisoned==false){
+                    this->gold+=gold_reward;
+                    this->xp+=xp_reward;
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << boss << " has been slain\n";
+                    std::cout << "You have gained " << gold_reward << " gold. You now have " << this->gold << " gold\n";
+                    std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                    std::cout << "Your health is " <<this->health << "\n";    
+                    this->playing(Merchant);            
+                }
+                else if( ehealth <=0 && poisoned==true){
+                    ehealth=this->max_health/3;
+                    edamage=60;
+                    std::cout << boss << " steals part of your lifeforce as you cut him down\n";
+                    std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
+                }
         }
     }
 };
@@ -578,7 +807,7 @@ class Healer : public Player{
         std::cout << "A " << current_enemy << " has appeared\n";
         std::cout << "The " << current_enemy << " has " << ehealth << " health and does " << edamage << " damage\n";
         while(ehealth > 0 || this->health>0){
-            int edamage_done = edamage - round(this->defence/5);
+            int edamage_done = edamage - round(this->adefence/5);
             int luck = rand()%101;
             int effect=1;
             std::cout << "LUCK IS " << luck <<"\n";
@@ -593,7 +822,7 @@ class Healer : public Player{
                 std::this_thread::sleep_for(std::chrono::milliseconds(1500));
                 std::cout << "You have "<<this->health << " health and the enemy has " << ehealth << " health\n";
                 this->health-=edamage_done*effect;
-                int damage_done = rand()%(this->defence+5);
+                int damage_done = rand()%(this->adamage+5);
                 if(damage_done<=0){
                     ehealth-=0;
                 }else{
@@ -645,6 +874,16 @@ class Healer : public Player{
             }else if(action == "heal"){
                 this->heal(Healer);
                 this->playing(Healer);
+            }else if(action == "boss"){
+                std::cout << "Are you sure that you want to face the boss, he is incredibly difficult\n";
+                std::string choice;
+                std::cin >> choice;
+                if (choice == "yes"){
+                    this->boss(Healer);
+                }
+                else{
+                    this->playing(Healer);
+                }
             }else{
                 this->playing(Healer);
             }
@@ -665,6 +904,72 @@ class Healer : public Player{
             exit(0);
         }else{
             this->idle(Healer);
+        }
+    }
+    void boss(Healer Healer){    
+        std::cout << "A towering visage appears infront of you as you challenge the Lord of the Dead , King of the Skeletons: AZEROTH the Despoiler\n";
+        std::string boss="AZEROTH";
+        int ehealth = 75;
+        int edamage = 30;
+        int gold_reward = 200;
+        int xp_reward = 150 ; 
+        bool poisoned = false;
+        while(ehealth >=0 || this->health>=0){
+            int temp_damage=this->adamage;
+            int temp_defence=this->adefence;
+            if(poisoned==true){
+                this->adamage*=0.95;
+                this->adefence*=0.95;
+                temp_damage=this->adamage/=2;
+                temp_defence=this->adefence/=2;
+            }
+            std::cout <<"Your damage is: " << temp_damage << "\n";
+            std::cout << "Your defence is: " <<temp_defence << "\n";
+            int rng = rand()%101;
+            if(rng>=85){
+                poisoned=true;
+                std::cout << boss <<" has poisoned you, next turn your stats will be halved \n";
+            }
+            int edamage_done = edamage - round(temp_defence/5);
+                if(edamage_done<=0){
+                    this->health-=0;
+                }else{
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << "You have "<<this->health << " health and  "<< boss << " has " << ehealth << " health\n";
+                    this->health-=edamage_done;
+                    int damage_done = rand()%(temp_damage+5);
+                    if(damage_done<=0){
+                        ehealth-=0;
+                    }else{
+                        ehealth-=damage_done;
+                    }
+                }
+                if(this->health<=0){
+                    if(this->health_pots>=1){
+                        this->heal(Healer);
+                        std::cout << "You make one last stand against " <<boss<< "\n";
+                    }else{
+                        std::cout << "You have died\n";
+                        this->alive=false;
+                        break;
+                    }
+                }
+                if(ehealth<=0 && poisoned==false){
+                    this->gold+=gold_reward;
+                    this->xp+=xp_reward;
+                    std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+                    std::cout << boss << " has been slain\n";
+                    std::cout << "You have gained " << gold_reward << " gold. You now have " << this->gold << " gold\n";
+                    std::cout << "You gained " << xp_reward << " xp. You now have " << this->xp << " xp\n";
+                    std::cout << "Your health is " <<this->health << "\n";    
+                    this->playing(Healer);            
+                }
+                else if( ehealth <=0 && poisoned==true){
+                    ehealth=this->max_health/3;
+                    edamage=60;
+                    std::cout << boss << " steals part of your lifeforce as you cut him down\n";
+                    std::cout << boss << ", has becomed outraged at your battle and begins to attack furiously\n";
+                }
         }
     }
 };
