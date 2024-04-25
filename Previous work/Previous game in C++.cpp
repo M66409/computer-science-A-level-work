@@ -39,7 +39,7 @@ class Player{
             level = 1;
             xp = 0;
             xp_needed = xp + (level * 50) + 100;
-            health_pots_price = rand()%30+10;
+            health_pots_price = rand()%31+10;
             damage_increase = 0;
             defence_increase = 0;
             adamage = damage + damage_increase;
