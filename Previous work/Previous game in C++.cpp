@@ -815,7 +815,6 @@ class Healer : public Player{
                 effect=0;
                 std::cout << "Your heightened senses of danger have allowed you to avoid the enemies attack\n";
             }
-            std::cout << "RUNNING NORMALLY\n";
             if(edamage_done<=0){
                 this->health-=0;
             }else{
