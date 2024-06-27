@@ -59,7 +59,7 @@ class Player{
                                   { 15, 10, 5, 1, 13, 2 },
                                   { rand()%91+45, rand()%31+15, rand()%21+10, rand()%11+5, rand()%81+40, rand()%7+3},
                                   { rand()%21+15, rand()%15+3, rand()%13+3,rand()%15+1,rand()%21+12, rand()%13+1}};
-        int index = rand()%6;
+        int index = rand()%7;
         std::string current_enemy = enemy[index];
         int ehealth;
         int edamage;
@@ -385,7 +385,7 @@ class Knight : public Player{
             { 15, 10, 5, 1, 13, 2 },
             { rand()%91+45, rand()%31+15, rand()%21+10, rand()%11+5, rand()%81+40, rand()%7+3},
             { rand()%11+15, rand()%5+3, rand()%3+3,rand()%5+1,rand()%11+12, rand()%3+1}};
-        int index = rand()%6;
+        int index = rand()%7;
         std::string current_enemy = enemy[index];
         int ehealth;
         int edamage;
@@ -598,7 +598,7 @@ class Merchant:public Player{
             { 15, 10, 5, 1, 13, 2 },
             { rand()%91+45, rand()%31+15, rand()%21+10, rand()%11+5, rand()%81+40, rand()%7+3},
             { rand()%11+15, rand()%5+3, rand()%3+3,rand()%5+1,rand()%11+12, rand()%3+1}};
-            int index = rand()%6;
+            int index = rand()%7;
             std::string current_enemy = enemy[index];
             int ehealth;
             int edamage;
@@ -791,7 +791,7 @@ class Healer : public Player{
             { 15, 10, 5, 1, 13, 2 },
             { rand()%91+45, rand()%31+15, rand()%21+10, rand()%11+5, rand()%81+40, rand()%7+3},
             { rand()%11+15, rand()%5+3, rand()%3+3,rand()%5+1,rand()%11+12, rand()%3+1}};
-        int index = rand()%6;
+        int index = rand()%7;
         std::string current_enemy = enemy[index];
         int ehealth;
         int edamage;
